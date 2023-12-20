@@ -1,0 +1,11 @@
+from turtle import *
+left(36)
+forward(10)
+left(126)
+forward(10)
+left(144)
+forward(10)
+left(144)
+forward(10)
+left(144)
+done()
