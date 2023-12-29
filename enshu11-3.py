@@ -116,7 +116,7 @@ class Dentaku():
         self.clear()
 
 # ここからメインプログラム
-dentaku = Dentaku()
+dentaku = Dentaku("kenzanyou")
 
 dentaku1 = Dentaku()
 

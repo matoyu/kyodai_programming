@@ -456,7 +456,7 @@ def play():
             # ここで棋譜に勝敗（引き分け）を追加
             break
         if is_win_actual(turn):
-            print(show_turn, "の勝ちです")
+            print(show_turn(), "の勝ちです")
             # ここで棋譜に勝敗（turn の勝ち）を追加
             break
         change_turn()

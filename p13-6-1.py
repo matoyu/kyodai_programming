@@ -151,12 +151,13 @@ def set_board(i, j, t):
         return 'illegal slot'
 
 # 盤面のi, jをボタンから受け取って処理
+# ボタンがクリックされてbutton_clicked の関数が呼び出されると、上から実行、勝敗が決するとその次のボタンクリックでif game_overのところでTrueとなり、returnでGUIへの表示なし
 def button_clicked(i,j):
     global game_over
     if board[i][j] != OPEN:
         label_text.set("Error")
         return
-    if game_over:
+    if game_over == True:
         return
     set_board(i, j, turn)
     print(show_board())

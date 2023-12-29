@@ -757,20 +757,25 @@ def check_changeable_place_inverse_diagonal_downward(row, column, t):
                     else:
                         changeable_place = [k, l]
                         changeable_place_list.append(changeable_place)
-#
-#
-# 手番 t の勝ちの判定
-#
+
 def is_win():
-    shiromasu = board.count(FIRST)
-    kuromasu = board.count(SECOND)
-    print("○は", shiromasu)
-    print("●は", kuromasu)
-    if shiromasu > kuromasu:
+    '''
+    手番 t の勝ちの判定
+    '''
+    second_count = 0
+    for i in range(8):
+        for j in range(8):
+            if board[i][j] == FIRST:
+                first_count += 1
+            elif board[i][j] == SECOND:
+                second_count += 1 
+    print("○は", first_count)
+    print("●は", second_count)
+    if first_count > second_count:
         print("白の勝ちです")
-    elif kuromasu > shiromasu:
+    elif second_count > first_count:
         print("黒の勝ちです")
-    elif shiromasu == kuromasu:
+    elif first_count == second_count:
         print("引き分けです")
 
 # 端末への入力を用いて、入力の検査をします. 正しい入力が得られた場合は、ひっくり返せるマスに手番 t を登録します
