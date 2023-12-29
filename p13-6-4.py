@@ -60,11 +60,11 @@ def change_turn():
 
 # 盤上での手番を示す
 
-def set_turn():
-    if turn == FIRST:
-        opponent_turn = SECOND
-    elif turn == SECOND:
-        opponent_turn = FIRST
+# def set_turn():
+#     if turn == FIRST:
+#         opponent_turn = SECOND
+#     elif turn == SECOND:
+#         opponent_turn = FIRST
 
 # 手羽の関連の関数のテスト
 #
@@ -172,7 +172,9 @@ def set_board(i,j,t):
     # print(show_board())
     # print(set_board(7,7,0))
     # print(show_board())
-#    
+#
+# ここから手番が置けるマスを探して、リスト化する
+#     
 # 手番 t が置けるマスのリスト（相手の石をひっくり返せる）
 #
 correct_place_list = []
@@ -471,8 +473,10 @@ def check_board_inverse_diagonal_downward(t):
 # # 
 # set_board(1, 5, 3)
 #
+# ここから実際に手番が石を置いて、相手の石をひっくり返す
+#
 # 手番tが登録されたrow, columnから縦上方向にひっくり返せるマスを検査し、相手方のマスに手番turnを登録
-def check_changeable_place_vertical_upward(row, column, turn):
+def check_changeable_place_vertical_upward(row, column, t):
     changeable_place_list = []
     #  縦上方向に残りマスが少なくてダメ
     if row == 0 or row == 1:
@@ -482,7 +486,7 @@ def check_changeable_place_vertical_upward(row, column, turn):
     elif row >= 2:
         if board[row-1][column] == OPEN:
             pass
-        elif board[row-1][column] == turn:
+        elif board[row-1][column] == t:
             pass
         elif board[row-1][column] == opponent_turn:
             changeable_place = [row-1, column]
@@ -491,9 +495,9 @@ def check_changeable_place_vertical_upward(row, column, turn):
                 if board[k][column] == open:
                     break
                 # 手番turnが出たら、ひっくり返せるリストのマスに手番turnを登録
-                elif board[k][column] == turn:
+                elif board[k][column] == t:
                     for cell in changeable_place_list:
-                        board[cell[0]][cell[1]] = turn
+                        board[cell[0]][cell[1]] = t
                 elif board[k][column] == opponent_turn:
                     if k == 0:
                         break
@@ -502,7 +506,7 @@ def check_changeable_place_vertical_upward(row, column, turn):
                         changeable_place_list.append(changeable_place)                                                     
 #
 # 手番tが登録されたrow, columnから縦下方向にひっくり返せるマスを検査し、相手方のマスに手番turnを登録
-def check_changeable_place_vertical_downward(turn, row, column):
+def check_changeable_place_vertical_downward(row, column, t):
     changeable_place_list = []
     # 縦下方向に残りマスが少なくてダメ
     if row == 6 or row == 7:
@@ -512,7 +516,7 @@ def check_changeable_place_vertical_downward(turn, row, column):
     elif row <= 5:
         if board[row+1][column] == OPEN:
             pass
-        elif board[row+1][column] == turn:
+        elif board[row+1][column] == t:
             pass
         elif board[row+1][column] == opponent_turn:
             changeable_place =[row+1, column]
@@ -520,9 +524,9 @@ def check_changeable_place_vertical_downward(turn, row, column):
             for k in range(row+2, 8):
                 if board[k][column] == OPEN:
                     break
-                elif board[k][column] == turn:
+                elif board[k][column] == t:
                     for cell in changeable_place_list:
-                        board[cell[0]][cell[1]] = turn
+                        board[cell[0]][cell[1]] = t
                 elif board[k][column] == opponent_turn:
                     if k == 7:
                         break
@@ -531,7 +535,7 @@ def check_changeable_place_vertical_downward(turn, row, column):
                     changeable_place_list.append(changeable_place)  
 #
 # 手番tが登録されたrow, columnから水平左方向にひっくり返せるマスを検査し、相手方のマスに手番turnを登録
-def check_changeable_place_horizontal_left(turn, row, column):
+def check_changeable_place_horizontal_left(row, column, t):
     changeable_place_list = []
     # 水平左方向に残りマスが少なくてダメ
     if column == 0 or column == 1:
@@ -540,7 +544,7 @@ def check_changeable_place_horizontal_left(turn, row, column):
     elif column >= 2:
         if board[row][column-1] == OPEN:
             pass
-        elif board[row][column-1] == turn:
+        elif board[row][column-1] == t:
             pass
         elif board[row][column-1] == opponent_turn:
             changeable_place =[row+1, column]
@@ -548,9 +552,9 @@ def check_changeable_place_horizontal_left(turn, row, column):
             for k in range(column-2 ,-1, -1):
                 if board [row][k] == OPEN:
                     break
-                elif board[row][k] == turn:
+                elif board[row][k] == t:
                     for cell in changeable_place_list:
-                        board[cell[0]][cell[1]] = turn
+                        board[cell[0]][cell[1]] = t
                 elif board[row][k] == opponent_turn:
                     if k == 0:
                         break
@@ -560,7 +564,7 @@ def check_changeable_place_horizontal_left(turn, row, column):
                         
 #          
 # 手番tが登録されたrow, columnから水平右方向にひっくり返せるマスを検査し、相手方のマスに手番turnを登録
-def check_changeable_place_horizontal_right(turn, row, column):
+def check_changeable_place_horizontal_right(row, column, t):
     changeable_place_list = []
     # 水平右方向に残りマスが少なくてダメ
     if column == 6 or column == 7:
@@ -569,7 +573,7 @@ def check_changeable_place_horizontal_right(turn, row, column):
     elif column <= 5:
         if board[row][column+1] == OPEN:
             pass
-        elif board[row][column+1] == turn:
+        elif board[row][column+1] == t:
             pass
         elif board[row][column+1] == opponent_turn:
             changeable_place =[row+1, column]
@@ -577,9 +581,9 @@ def check_changeable_place_horizontal_right(turn, row, column):
             for k in range(column+2, 8):
                 if board[row][k] == OPEN:
                     break
-                elif board[row][k] == turn:
+                elif board[row][k] == t:
                     for cell in changeable_place_list:
-                        board[cell[0]][cell[1]] = turn
+                        board[cell[0]][cell[1]] = t
                 elif board[row][k] == opponent_turn:
                     if k == 7:
                         break
@@ -588,7 +592,7 @@ def check_changeable_place_horizontal_right(turn, row, column):
                         changeable_place_list.append(changeable_place)                     
 #
 # 手番turnが登録されたrow, columnから左斜め上方向にひっくり返せるマスを検査し、相手方のマスに手番tを登録
-def check_changeable_place_diagonal_upward(turn, row, column):
+def check_changeable_place_diagonal_upward(row, column, t):
     changeable_place_list = []
     # 左斜め上方向に残りマスが少なくてダメ
     if row == 0 or row == 1:
@@ -600,7 +604,7 @@ def check_changeable_place_diagonal_upward(turn, row, column):
         # t 番手の左斜め上のマスの判定
         if board[row-1][column-1] == OPEN:
             pass
-        elif board[row-1][column-1] == turn:
+        elif board[row-1][column-1] == t:
             pass
         elif board[row-1][column-1] == opponent_turn:
             changeable_place = [row-1, column-1]
@@ -616,9 +620,9 @@ def check_changeable_place_diagonal_upward(turn, row, column):
                 l = l - 1
                 if board[k][l] == OPEN:
                     break
-                elif board[k][l] == turn:
+                elif board[k][l] == t:
                     for cell in changeable_place_list:
-                        board[cell[0]][cell[1]] = turn
+                        board[cell[0]][cell[1]] = t
                 elif board[k][l] == opponent_turn:
                     if k == 0 or l == 0:
                         break
@@ -628,7 +632,7 @@ def check_changeable_place_diagonal_upward(turn, row, column):
 #                   
 #            
 # 手番turnが登録されたrow, columnから右斜め下方向にひっくり返せるマスを検査し、相手方のマスに手番turnを登録 
-def check_changeable_place_diagonal_downward(turn, row, column):
+def check_changeable_place_diagonal_downward(row, column, t):
     changeable_place_list = []
     # 右斜め下方向にマスが少なくてダメ
     if row == 6 or row == 7:
@@ -640,7 +644,7 @@ def check_changeable_place_diagonal_downward(turn, row, column):
             # t 番手の右斜め下のマスの判定
             if board[row+1][column+1] == OPEN:
                 pass
-            elif board[row+1][column+1] == turn:
+            elif board[row+1][column+1] == t:
                 pass
             elif board[row+1][column+1] == opponent_turn:
                 changeable_place = [row+1, column+1]
@@ -661,9 +665,9 @@ def check_changeable_place_diagonal_downward(turn, row, column):
                         l = l+1
                         if board[k][l] == OPEN:
                             break
-                        elif board[k][l] == turn:
+                        elif board[k][l] == t:
                             for cell in changeable_place_list:
-                                board[cell[0]][cell[1]] = turn
+                                board[cell[0]][cell[1]] = t
                         elif board[k][l] == opponent_turn:
                             if k == 7 or l == 7:
                                 break
@@ -672,7 +676,7 @@ def check_changeable_place_diagonal_downward(turn, row, column):
                                 changeable_place_list.append(changeable_place)       
 #
 # 手番turnが登録されたrow, columnから右斜め上方向にひっくり返せるマスを検査し、相手方のマスに手番turnを登録
-def check_changeable_place_inverse_diagonal_upward(turn, row, column):
+def check_changeable_place_inverse_diagonal_upward(row, column, t):
     changeable_place_list = []
     # 右斜め上方向に残りマスが少なくてダメ
     if row == 0 or row == 1:
@@ -684,7 +688,7 @@ def check_changeable_place_inverse_diagonal_upward(turn, row, column):
         # t 番手の右斜め上のマスの判定
         if board[row-1][column+1] == OPEN:
             pass
-        elif board[row-1][column+1] == turn:
+        elif board[row-1][column+1] == t:
             pass
         elif board[row-1][column+1] == opponent_turn:
             changeable_place = [row-1, column+1]
@@ -704,9 +708,9 @@ def check_changeable_place_inverse_diagonal_upward(turn, row, column):
                 l = l + 1
                 if board[k][l] == OPEN:
                     break
-                elif board[k][l] == turn:
+                elif board[k][l] == t:
                     for cell in changeable_place_list:
-                        board[cell[0]][cell[1]] = turn        
+                        board[cell[0]][cell[1]] = t        
                 elif board[k][l] == opponent_turn:
                     if k == 0 or l == 7:
                         break
@@ -715,7 +719,7 @@ def check_changeable_place_inverse_diagonal_upward(turn, row, column):
                         changeable_place_list.append(changeable_place)       
 #
 # 手番turnが登録されたrow, columnから左斜め下方向にひっくり返せるマスを検査し、相手方のマスに手番turnを登録
-def check_changeable_place_inverse_diagonal_downward(turn, row, column):
+def check_changeable_place_inverse_diagonal_downward(row, column, t):
     changeable_place_list = []
     # 残りマスが少なくてダメ
     if row == 6 or row == 7:
@@ -727,7 +731,7 @@ def check_changeable_place_inverse_diagonal_downward(turn, row, column):
         # t 番手の左斜め下のマスの判定
         if board[row+1][column-1] == OPEN:
             pass
-        elif board[row+1][column-1] == turn:
+        elif board[row+1][column-1] == t:
             pass
         elif board[row+1][column-1] == opponent_turn:
             changeable_place = [row+1, column-1]
@@ -744,9 +748,9 @@ def check_changeable_place_inverse_diagonal_downward(turn, row, column):
                 l = l - 1
                 if board[k][l] == OPEN:
                     break
-                elif board[k][l] == turn:
+                elif board[k][l] == t:
                     for cell in changeable_place_list:
-                        board[cell[0]][cell[1]] = turn          
+                        board[cell[0]][cell[1]] = t          
                 elif board[k][l] == opponent_turn:
                     if k == 7 or l == 0:
                         break
@@ -815,14 +819,14 @@ def play():
             print(result)
             if result == 'OK':
                 # 手番turnが置いたマスのrow, columnから縦、横、斜めを再検査し、相手の石を挟むことができればマスに手番turnを登録する
-                check_changeable_place_vertical_upward(turn)
-                check_changeable_place_vertical_downward(turn)
-                check_changeable_place_horizontal_left(turn)
-                check_changeable_place_horizontal_right(turn)
-                check_changeable_place_diagonal_upward(turn)   
-                check_changeable_place_diagonal_downward(turn)                
-                check_changeable_place_inverse_diagonal_upward(turn)
-                check_changeable_place_inverse_diagonal_downward(turn)
+                check_changeable_place_vertical_upward(row, column, turn)
+                check_changeable_place_vertical_downward(row, column, turn)
+                check_changeable_place_horizontal_left(row, column, turn)
+                check_changeable_place_horizontal_right(row, column, turn)
+                check_changeable_place_diagonal_upward(row, column, turn)   
+                check_changeable_place_diagonal_downward(row, column, turn)                
+                check_changeable_place_inverse_diagonal_upward(row, column, turn)
+                check_changeable_place_inverse_diagonal_downward(row, column, turn)
 #
         print(show_board())
         if is_full:
@@ -832,15 +836,15 @@ def play():
             change_turn()
 
 
-def test():
-    pass_count = 0
-    init_turn()
-    init_board()
-    board[5][3] = 2
-    print(show_board())
-    check_changeable_place_vertical_upward(6, 3, 1)
-    print(show_board())
+# def test():
+#     pass_count = 0
+#     init_turn()
+#     init_board()
+#     board[5][3] = 2
+#     print(show_board())
+#     check_changeable_place_vertical_upward(6, 3, 1)
+#     print(show_board())
 
-# play()
+play()
 
-test()
+# test()
