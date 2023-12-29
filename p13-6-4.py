@@ -161,6 +161,14 @@ def set_board(i,j,t):
     else:
         return 'nonexistent slot'
 
+def set_board_to_0(i, j):
+    # 盤面上のマスである
+    if (i>=0) and (i<8) and (j>=0) and (j<8):
+        board[i][j] = 0
+        return 'OK'
+    else:
+        return 'nonexistent slot'
+
 # 盤面のテスト関数
 #     
 # def test_board1():
@@ -189,15 +197,20 @@ def check_board_vertical_upward(t):
     '垂直上方向に手番 t が置けるマスがあることを判定します'
     for i in range (8):
         for j in range(8):
+            if board[i][j] != OPEN:
+                continue
             set_board(i,j,t)
             #  残りマスが少なくてダメ
             if i == 0 or i == 1:
+                set_board_to_0(i, j)
                 continue
             #　以下iが2以上の場合
             elif i >= 2:
                 if board[i-1][j] == OPEN:
+                    set_board_to_0(i, j)
                     continue
                 elif board[i-1][j] == t:
+                    set_board_to_0(i, j)
                     continue
                 elif board[i-1][j] == opponent_turn:
                     for k in range(i-2,-1, -1):
@@ -211,21 +224,27 @@ def check_board_vertical_upward(t):
                             if k == 0:
                                 break
                             else:
-                                continue                       
+                                continue
+                    set_board_to_0(i, j)
 #
 def check_board_vertical_downward(t):
     '垂直下方向に手番 t が置けるマスがあることを判定します'
     for i in range(8):
         for j in range(8):
+            if board[i][j] != OPEN:
+                continue
             set_board(i,j,t)
             # 残りマスが少なくてダメ
             if i == 6 or i == 7:
+                set_board_to_0(i, j)
                 continue
             # 以下iが０以上５以下の場合
             elif i <= 5:
                 if board[i+1][j] == OPEN:
+                    set_board_to_0(i, j)
                     continue
                 elif board[i+1][j] == t:
+                    set_board_to_0(i, j)
                     continue
                 elif board[i+1][j] == opponent_turn:
                     for k in range(i+2, 8):
@@ -240,20 +259,26 @@ def check_board_vertical_downward(t):
                                 break
                             else:
                                 continue
+                    set_board_to_0(i, j)
 #
 def check_board_horizontal_left(t):
     '水平左方向に手番 t が置けるマスがあることを判定します'
     for i in range(8):
         for j in range(8):
+            if board[i][j] != OPEN:
+                continue
             set_board(i,j,t)
             #  残りマスが少なくてダメ
             if j == 0 or j == 1:
+                set_board_to_0(i, j)
                 continue
             #　以下jが2以上の場合
-            elif i >= 2:
+            elif j >= 2:
                 if board[i][j-1] == OPEN:
+                    set_board_to_0(i, j)
                     continue
                 elif board[i][j-1] == t:
+                    set_board_to_0(i, j)
                     continue
                 elif board[i][j-1] == opponent_turn:
                     for k in range(j-2 ,-1, -1):
@@ -268,20 +293,26 @@ def check_board_horizontal_left(t):
                                 break
                             else:
                                 continue
+                    set_board_to_0(i, j)
 #
 def check_board_horizontal_right(t):
     '水平右方向に手番 t が置けるマスがあることを判定します'
     for i in range(8):
         for j in range(8):
+            if board[i][j] != OPEN:
+                continue
             set_board(i,j,t)
             # 残りマスが少なくてダメ
             if j == 6 or j == 7:
+                set_board_to_0(i, j)
                 continue
             # 以下 j が０以上５以下の場合
             elif j <= 5:
                 if board[i][j+1] == OPEN:
+                    set_board_to_0(i, j)
                     continue
                 elif board[i][j+1] == t:
+                    set_board_to_0(i, j)
                     continue
                 elif board[i][j+1] == opponent_turn:
                     for k in range(j+2, 8):
@@ -296,23 +327,30 @@ def check_board_horizontal_right(t):
                                 break
                             else:
                                 continue
+                    set_board_to_0(i, j)
 #                            
 def check_board_diagonal_upward(t):
     '対角左上方向に手番 t が置けるマスがあることを判定します'
     for i in range(8):
         for j in range(8):
+            if board[i][j] != OPEN:
+                continue
             set_board(i,j,t)
             # 残りマスが少なくてダメ
             if i == 0 or i == 1:
+                set_board_to_0(i, j)
                 continue
             elif j == 0 or j == 1:
+                set_board_to_0(i, j)
                 continue
             # 以下i, j が２以上の場合
             elif i >= 2 and j >= 2:
                 # t 番手の左斜め上のマスの判定
                 if board[i-1][j-1] == OPEN:
+                    set_board_to_0(i, j)
                     continue
                 elif board[i-1][j-1] == t:
+                    set_board_to_0(i, j)
                     continue
                 elif board[i-1][j-1] == opponent_turn:
                     # t 番手から左斜め上方向に２以上離れたマスを判定する範囲を決める
@@ -334,23 +372,30 @@ def check_board_diagonal_upward(t):
                                 break
                             else:
                                 continue
+                    set_board_to_0(i, j)
 #            
 def check_board_diagonal_downward(t):
     '対角右下方向に手番 t が置けるマスがあることを判定します'
     for i in range(8):
         for j in range(8):
+            if board[i][j] != OPEN:
+                continue
             set_board(i,j,t)
             # 残りマスが少なくてダメ
             if i == 6 or i == 7:
+                set_board_to_0(i, j)
                 continue
             elif j == 6 or j == 7:
+                set_board_to_0(i, j)
                 continue
             # 以下i, j が5以下の場合
             elif i <= 5 and j <= 5:
                 # t 番手の右斜め下のマスの判定
                 if board[i+1][j+1] == OPEN:
+                    set_board_to_0(i, j)
                     continue
                 elif board[i+1][j+1] == t:
+                    set_board_to_0(i, j)
                     continue
                 elif board[i+1][j+1] == opponent_turn:
                     # t 番手から右斜め下方向に２以上離れたマスを判定する範囲を決める
@@ -378,23 +423,30 @@ def check_board_diagonal_downward(t):
                                 break
                             else:
                                 continue
+                    set_board_to_0(i, j)
 #
 def check_board_inverse_diagonal_upward(t):
     '逆対角右上方向に手番 t が置けるマスがあることを判定します'
     for i in range(8):
         for j in range(8):
+            if board[i][j] != OPEN:
+                continue
             set_board(i,j,t)
             # 残りマスが少なくてダメ
             if i == 0 or i == 1:
+                set_board_to_0(i, j)
                 continue
             elif j == 6 or j == 7:
+                set_board_to_0(i, j)
                 continue
             # 以下i が2以上, j が5以下の場合
             elif i >= 2 and j <= 5:
                 # t 番手の右斜め上のマスの判定
                 if board[i-1][j+1] == OPEN:
+                    set_board_to_0(i, j)
                     continue
                 elif board[i-1][j+1] == t:
+                    set_board_to_0(i, j)
                     continue
                 elif board[i-1][j+1] == opponent_turn:
                     # t 番手から右斜め上方向に２以上離れたマスを判定する範囲を決める
@@ -421,23 +473,30 @@ def check_board_inverse_diagonal_upward(t):
                                 break
                             else:
                                 continue
+                    set_board_to_0(i, j)
 #
 def check_board_inverse_diagonal_downward(t):
     '逆対角左下方向に手番 t が置けるマスがあることを判定します'
     for i in range(8):
         for j in range(8):
+            if board[i][j] != OPEN:
+                continue
             set_board(i,j,t)
             # 残りマスが少なくてダメ
             if i == 6 or i == 7:
+                set_board_to_0(i, j)
                 continue
             elif j == 0 or j == 1:
+                set_board_to_0(i, j)
                 continue
             # 以下i が5以下, j が2以上の場合
             elif i <= 5 and j >= 2:
                 # t 番手の左斜め下のマスの判定
                 if board[i+1][j-1] == OPEN:
+                    set_board_to_0(i, j)
                     continue
                 elif board[i+1][j-1] == t:
+                    set_board_to_0(i, j)
                     continue
                 elif board[i+1][j-1] == opponent_turn:
                     # t 番手から左斜め下方向に２以上離れたマスを判定する範囲を決める
@@ -461,6 +520,7 @@ def check_board_inverse_diagonal_downward(t):
                                 break
                             else:
                                 continue
+                    set_board_to_0(i, j)
 #
 # 盤面のテスト関数２つめ、石を置けるマス判定のテスト
 #
@@ -762,6 +822,7 @@ def is_win():
     '''
     手番 t の勝ちの判定
     '''
+    first_count = 0
     second_count = 0
     for i in range(8):
         for j in range(8):
@@ -783,7 +844,7 @@ def play():
     pass_count = 0
     init_turn()
     init_board()
-    print(show_board)
+    print(show_board())
     # 盤面に空きマスがある時に、手番t が置けるマスがあるかを判定して「置けるリスト」を作成
     while True:
         init_list()
@@ -832,7 +893,7 @@ def play():
                 check_changeable_place_diagonal_downward(row, column, turn)                
                 check_changeable_place_inverse_diagonal_upward(row, column, turn)
                 check_changeable_place_inverse_diagonal_downward(row, column, turn)
-#
+
         print(show_board())
         if is_full:
             is_win()
