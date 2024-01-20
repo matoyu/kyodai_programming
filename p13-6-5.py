@@ -1,6 +1,7 @@
 #
-# オセロゲーム
+# オセロゲーム(GUI)
 #
+import tkinter as tk
 # 定数の定義
 
 OPEN = 0
@@ -24,22 +25,14 @@ board = [[0,0,0,0,0,0,0,0,],
          [0,0,0,0,0,0,0,0], 
          [0,0,0,0,0,0,0,0]]
 #
-# テスト用の棋譜
-#
-log = [[3,5], [5,4], [2,4], [1,4], [1,5], [2,2], [1,3], [0,4], [4,2], [2,6], [0,6], [4,1], [5,3], [5,2], [4,0], [5,5], [3,2], [2,5], [6,3], [0,5], [1,6], [0,7], [1,7], [2,7], [5,6], [5,7], [6,5], [1,2], [4,7], [3,7], [0,2], [3,6], [4,6], [4,5], 2, [2,3], [1,1], [1,0], [7,2], [6,6], [7,5], [6,4], [0,0], [2,0], [0,1], [7,7], [7,4], [0,3], [7,6], [6,7], [3,0], [6,2], [2,1], [7,3], [3,1], [7,1], [5,0], [5,1], [SECOND]]
-#
-# 手番関連の関数
-#
-# 手番を文字列に
-#
-def show_turn():
-    '手番を示す文字列を返す'
+def show_turn_gui():
+    '手番をlabel上に表示'
     if turn == FIRST:
-        return('先手')
+        label_text.set("先手の番です")
     elif turn == SECOND:
-        return('後手')
+        label_text.set("後手の番です")
     else:
-        return('手番の値が不適切です')
+        label_text.set("手番が不適切です")
 #
 # 手番の初期化
 #
@@ -61,45 +54,20 @@ def change_turn():
         turn = FIRST
         opponent_turn = SECOND
 
-# 手羽の関連の関数のテスト
-#
-# def test_turn():
-#     '手番をテストする'
-#     init_turn()
-#     print(show_turn(),"の番です")
-#     change_turn()
-#     print(show_turn(),"の番です")
-#     change_turn()
-#     print(show_turn(),"の番です")
-#     print(turn)
-#     print(opponent_turn)
-# #
-# #
-# # 盤面関連の関数
-# #
-# # 盤面を表示する文字列
-# #
-def show_board():
+# 盤面を表示するGUI
+def show_board_gui():
     '盤面を表す文字列を返す'
-    s = ' : 0 1 2 3 4 5 6 7\n-------------------\n'
-    for i in range (8):
-        s = s + str(i) + ': '
+    for i in range(8):
         for j in range(8):
-            cell = ''
             if board[i][j] == OPEN:
-                cell = ' '
+                button_labels[i][j].set(' ')
             elif board[i][j] == FIRST:
-                cell = '○'
+                button_labels[i][j].set('○')
             elif board[i][j] == SECOND:
-                cell = '●'
+                button_labels[i][j].set('●')
             else:
-                cell = '?'
-            s = s + cell + ' '
-        s = s + '\n'
-    return s 
-#
-# 盤面の初期化
-# 
+                button_labels[i][j].set('?')
+
 def init_board():
     '盤面の中心に先手と後手の石を２ずつ置く、他をすべて空(OPEN)に初期化する'
     for i in range(8):
@@ -114,9 +82,8 @@ def init_board():
                 board[i][j] = SECOND
             else:
                 board[i][j] = OPEN
-#
+
 # 盤面の i, j の位置の値を返す
-# #
 def examine_board(i,j):
     '盤面の i 行 j 行の値を返す'
     return board[i][j]
@@ -130,6 +97,7 @@ def is_full():
             if board[i][j] == OPEN:
                 return False
     return True
+#
 #
 # 盤面の i, j に手番 t を登録、状態を文字列で返す
 #
@@ -155,7 +123,7 @@ def set_board(i,j,t):
             return 'illegal turn'
     else:
         return 'nonexistent slot'
-
+#
 def set_board_to_0(i, j):
     # 盤面上のマスである
     if (i>=0) and (i<8) and (j>=0) and (j<8):
@@ -163,23 +131,6 @@ def set_board_to_0(i, j):
         return 'OK'
     else:
         return 'nonexistent slot'
-
-# 盤面のテスト関数
-#     
-# def test_board1():
-#     init_board()
-#     print(show_board())
-    # print(set_board(0,0,1))
-    # print(show_board())
-    # print(set_board(1,1,2))
-    # print(show_board())
-    # print(set_board(7,7,0))
-    # print(show_board())
-#
-# ここから手番が置けるマスを探して、リスト化する
-#     
-# 手番 t が置けるマスのリスト（相手の石をひっくり返せる）
-#
 correct_place_list = []
 #
 def init_list():
@@ -531,19 +482,6 @@ def check_board_inverse_diagonal_downward(t):
                                 continue
                     set_board_to_0(i, j)
 #
-# 盤面のテスト関数２つめ、石を置けるマス判定のテスト
-#
-# def test_board2():
-#     init_board()
-#     print(show_board())
-#     check_board_vertical_upward(turn)
-#     print("cpl:", correct_place_list)        
-# test_board2()
-# # 
-# set_board(1, 5, 3)
-#
-# ここから実際に手番が石を置いて、相手の石をひっくり返す
-#
 # 手番tが登録されたrow, columnから縦上方向にひっくり返せるマスを検査し、相手方のマスに手番turnを登録
 def check_changeable_place_vertical_upward(row, column, t):
     changeable_place_list = []
@@ -842,7 +780,8 @@ def check_changeable_place_inverse_diagonal_downward(row, column, t):
                         changeable_place = [k, l]
                         changeable_place_list.append(changeable_place)
                         print("pls:", changeable_place_list)
-
+#
+# 勝ちの判定
 def is_win():
     '''
     手番 t の勝ちの判定
@@ -858,84 +797,110 @@ def is_win():
     print("○は", first_count)
     print("●は", second_count)
     if first_count > second_count:
-        print("白の勝ちです")
+        label_text.set("白の勝ちです")
     elif second_count > first_count:
-        print("黒の勝ちです")
+        label_text.set("黒の勝ちです")
     elif first_count == second_count:
-        print("引き分けです")
+        label_text.set("引き分けです")
 
-# 端末への入力を用いて、入力の検査をします. 正しい入力が得られた場合は、ひっくり返せるマスに手番 t を登録します
-def play():
-    pass_count = 0
+# 盤面のi, jをボタンから受け取って処理
+# ボタンがクリックされてbutton_clicked の関数が呼び出されると、上から実行、勝敗が決するとその次のボタンクリックでif game_overのところでTrueとなり、returnでGUIへの表示なし
+# def button_clicked(i,j):
+#     global game_over
+#     if board[i][j] != OPEN:
+#         label_text.set("Error")
+#         return
+#     if game_over == True:
+#         return
+#     set_board(i, j, turn)
+#     print(show_board())
+#     show_board_gui()
+#     if is_draw():
+#         game_over = True
+#         label_text.set("引き分け")
+#     if is_win_actual(turn):
+#         game_over = True
+#         if turn == FIRST:
+#             label_text.set("⭕の勝ち")    
+#         elif turn == SECOND:
+#             label_text.set("❌の勝ち")
+#     change_turn()
+
+# resetボタンで手番と盤面を初期化
+def reset():
+    # global game_over
     init_turn()
     init_board()
-    print(show_board())
-    # 盤面に空きマスがある時に、手番t が置けるマスがあるかを判定して「置けるリスト」を作成
-    while True:
-        init_list()
-        check_board_vertical_upward(turn)
-        check_board_vertical_downward(turn)
-        check_board_horizontal_left(turn)
-        check_board_horizontal_right(turn)
-        check_board_diagonal_upward(turn)
-        check_board_diagonal_downward(turn)
-        check_board_inverse_diagonal_upward(turn)
-        check_board_inverse_diagonal_downward(turn)
-        print("cpl:", correct_place_list)
-        # 手番turnが置けるマスがなく、置けるマスのリストが空
-        if len(correct_place_list) == 0: 
-            print('Pass')
-            pass_count += 1
-            # 双方置けるマスがなく、勝敗判定に移る
-            if pass_count == 2:
-                is_win()
-                break
-            # 手番側のみ置けるマスがないため、相手に手番を交代する
-            else:
-                change_turn()
-        # 手番turnが置けるマスがあるので、手番の入力を促す
-        else:
-            while True:
-                pass_count = 0
-                print(show_turn(),"の番です")
-                row = int(input("行を入力してください: "))
-                column = int(input("列を入力してください: "))
-                # [row, column]がcorrect_place_listにあるかどうかをチェックし、あれば手番turnを登録
-                square_to_check = [row, column]
-                if not square_to_check in correct_place_list:
-                    print("そこには置けません")
-                else:
-                    break
-            result = set_board(row, column, turn)
-            print(result)
-            if result == 'OK':
-                # 手番turnが置いたマスのrow, columnから縦、横、斜めを再検査し、相手の石を挟むことができればマスに手番turnを登録する
-                check_changeable_place_vertical_upward(row, column, turn)
-                check_changeable_place_vertical_downward(row, column, turn)
-                check_changeable_place_horizontal_left(row, column, turn)
-                check_changeable_place_horizontal_right(row, column, turn)
-                check_changeable_place_diagonal_upward(row, column, turn)   
-                check_changeable_place_diagonal_downward(row, column, turn)                
-                check_changeable_place_inverse_diagonal_upward(row, column, turn)
-                check_changeable_place_inverse_diagonal_downward(row, column, turn)
+    # for i in button_labels:
+    #     for j in i:
+    #         j.set(' ')
+    init_label()
+    # game_over = False
+#
+def init_label():
+    label_text.set("オセロゲーム")
 
-        print(show_board())
-        if is_full():
-            is_win()
-            break
-        else:
-            change_turn()
+# tkinter での画面の構成, ここからGUI
+num_buttons_per_row = 8
+num_rows = 8
+root = tk.Tk()
+f = tk.Frame(root)
+f.grid()        
+#
+# StringVarのインスタンスを格納する変数button_labelsのリスト
+# 8行全てのStringVar変数のリスト
+all_button_labels = []
+for i in range(8):
+    # １行８個分のStringVar変数のリスト
+    button_labels = []
+    for j in range(8):
+        button_labels.append(tk.StringVar(f))
+    all_button_labels.append(button_labels)
+# print(all_button_labels)
+#
+# button上の表示を全てスペースにする
+for i in all_button_labels:
+    for j in i:
+       j.set(' ')
+#
+# ウィジェットの作成
+def create_buttons(f, num_buttons_per_row, num_rows):
+    for i in range(num_rows):
+        for j in range(num_buttons_per_row):
+            button_number = 1 * num_buttons_per_row + j + 1
+            button = tk.Button(f, textvariable=all_button_labels[i][j],command=lambda:button_clicked(i,j) height=3, width=3)
+            button.grid(row=i+1, column=j)
+create_buttons(f, num_buttons_per_row, num_rows)
+#
+# resetボタンの作成とウィジェットの割付
+br = tk.Button(f, text='Reset',command=reset)
+br.grid(row=9, column=0, columnspan=8)
+
+# command=lambda:buttun_clicked(i,j),
+# b1 = tk.Button(f, textvariable=all_button_labels[0][0], command=lambda:button_clicked(0,0), height=3, width=3)
+# b2 = tk.Button(f, textvariable=all_button_labels[0][1], command=lambda:button_clicked(0,1), height=3, width=3)
+# b3 = tk.Button(f, textvari#able=button_labels[0][2], command=lambda:button_clicked(0,2), height=3, width=3)
+# b4 = tk.Button(f, textvariable=button_labels[1][0], command=lambda:button_clicked(1,0), height=3, width=3)
+# b5 = tk.Button(f, textvariable=button_labels[1][1], command=lambda:button_clicked(1,1), height=3, width=3)
+# b6 = tk.Button(f, textvariable=button_labels[1][2], command=lambda:button_clicked(1,2), height=3, width=3)
+# b7 = tk.Button(f, textvariable=button_labels[2][0], command=lambda:button_clicked(2,0), height=3, width=3)
+# b8 = tk.Button(f, textvariable=button_labels[2][1], command=lambda:button_clicked(2,1), height=3, width=3)
+# b9 = tk.Button(f, textvariable=button_labels[2][2], command=lambda:button_clicked(2,2), height=3, width=3)
+# br = tk.Button(f, text='Reset',command=reset)
+        
+# Grid 型ジオメトリマネージャによるウィジェットの割付
+# for i in range(8):
+#     for j in range(8):
+# b1.grid(row=1, column=0)
+# b2.grid(row=1, column=1)
 
 
-# def test():
-#     pass_count = 0
-#     init_turn()
-#     init_board()
-#     board[5][3] = 2
-#     print(show_board())
-#     check_changeable_place_vertical_upward(6, 3, 1)
-#     print(show_board())
+# ラベル上のテキストを変換するStringVarのインスタンス
+label_text = tk.StringVar(f)
+label_text.set("オセロゲーム")
 
-play()
+# 勝敗を表示するウィジェット
+l = tk.Label(f, textvariable=label_text, height = 3)
+l.grid(row=0, column=0, columnspan=8)
 
-# test()
+root.mainloop()

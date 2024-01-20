@@ -55,9 +55,9 @@ def change_turn():
         turn = SECOND
     elif turn == SECOND:
         turn = FIRST
-#
-# 手番関連の関数のテスト
-# 
+
+# #手番関連の関数のテスト
+
 # def test_turn():
 #     '手番をテストする'
 #     init_turn()
@@ -66,7 +66,7 @@ def change_turn():
 #     print(show_turn(),"の番です")
 #     change_turn()
 #     print(show_turn(),"の番です")
-#
+# 
 # 盤面関連の関数
 #
 # 盤面を表示する文字列
@@ -522,13 +522,13 @@ def test_log():
 #
 #   すべてのテスト
 #
-def test_all():
-    'すべてのテストを行います'
-    test_turn()
-    test_board1()
-    test_board2()
-    test_board3()
-    test_log()
+# def test_all():
+#     'すべてのテストを行います'
+#     test_turn()
+#     test_board1()
+#     test_board2()
+#     test_board3()
+#     test_log()
 #
 # 実際のプレイ
 #
