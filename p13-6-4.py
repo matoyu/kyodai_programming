@@ -859,10 +859,13 @@ def is_win():
     print("●は", second_count)
     if first_count > second_count:
         print("白の勝ちです")
+        log.append(FIRST)
     elif second_count > first_count:
         print("黒の勝ちです")
+        log.append(SECOND)
     elif first_count == second_count:
         print("引き分けです")
+        log.append(DRAW)
 
 # 端末への入力を用いて、入力の検査をします. 正しい入力が得られた場合は、ひっくり返せるマスに手番 t を登録します
 def play():
@@ -870,6 +873,8 @@ def play():
     init_turn()
     init_board()
     print(show_board())
+    firstlog = []
+    secondlog = []
     # 盤面に空きマスがある時に、手番t が置けるマスがあるかを判定して「置けるリスト」を作成
     while True:
         init_list()
@@ -885,14 +890,15 @@ def play():
         # 手番turnが置けるマスがなく、置けるマスのリストが空
         if len(correct_place_list) == 0: 
             print('Pass')
+
             pass_count += 1
             # 双方置けるマスがなく、勝敗判定に移る
             if pass_count == 2:
                 is_win()
                 break
             # 手番側のみ置けるマスがないため、相手に手番を交代する
-            else:
-                change_turn()
+            # else:
+                # change_turn()
         # 手番turnが置けるマスがあるので、手番の入力を促す
         else:
             while True:
@@ -907,6 +913,12 @@ def play():
                 else:
                     break
             result = set_board(row, column, turn)
+            if turn == FIRST:
+                firstlog.append(square_to_check)
+            elif turn == SECOND:
+                secondlog.append(square_to_check)
+            print("firstslog:", firstlog)
+            print("secondlog:", secondlog)
             print(result)
             if result == 'OK':
                 # 手番turnが置いたマスのrow, columnから縦、横、斜めを再検査し、相手の石を挟むことができればマスに手番turnを登録する
@@ -925,7 +937,11 @@ def play():
             break
         else:
             change_turn()
-
+    # print("-----------------------------------")
+    # if len(log)>0:
+    #     replay_log(log)
+    # else:
+    #     print("棋譜は作成されていません")
 
 # def test():
 #     pass_count = 0

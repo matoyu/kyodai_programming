@@ -60,15 +60,20 @@ def show_board_gui():
     for i in range(8):
         for j in range(8):
             if board[i][j] == OPEN:
-                button_labels[i][j].set(' ')
+                all_button_labels[i][j].set(' ')
             elif board[i][j] == FIRST:
-                button_labels[i][j].set('○')
+                all_button_labels[i][j].set('○')
             elif board[i][j] == SECOND:
-                button_labels[i][j].set('●')
+                all_button_labels[i][j].set('●')
             else:
-                button_labels[i][j].set('?')
+                all_button_labels[i][j].set('?')
 
 def init_board():
+    for i in range(8):
+        for j in range(8):
+            board[i][j] = OPEN
+
+def start_board():
     '盤面の中心に先手と後手の石を２ずつ置く、他をすべて空(OPEN)に初期化する'
     for i in range(8):
         for j in range(8):
@@ -802,11 +807,28 @@ def is_win():
         label_text.set("黒の勝ちです")
     elif first_count == second_count:
         label_text.set("引き分けです")
+#
+#START_RESETボタンが押された時の処理
+def start_reset(start_reset_button_text):
+    print(start_reset_button_text)
+    print(start_reset_button_text.get())
+    if start_reset_button_text.get() == "START":
+        start_reset_button_text.set("RESET")
+        start_board()
+        show_board_gui()
+    elif start_reset_button_text.get() == "RESET":
+        start_reset_button_text.set("START")
+        init_turn()
+        init_board()
+        show_board_gui()
 
-# 盤面のi, jをボタンから受け取って処理
-# ボタンがクリックされてbutton_clicked の関数が呼び出されると、上から実行、勝敗が決するとその次のボタンクリックでif game_overのところでTrueとなり、returnでGUIへの表示なし
-# def button_clicked(i,j):
-#     global game_over
+    # for i in button_labels:
+    #     for j in i:
+    #         j.set(' ')
+    init_label()
+    # game_over = False
+
+        #    global game_over
 #     if board[i][j] != OPEN:
 #         label_text.set("Error")
 #         return
@@ -825,17 +847,6 @@ def is_win():
 #         elif turn == SECOND:
 #             label_text.set("❌の勝ち")
 #     change_turn()
-
-# resetボタンで手番と盤面を初期化
-def reset():
-    # global game_over
-    init_turn()
-    init_board()
-    # for i in button_labels:
-    #     for j in i:
-    #         j.set(' ')
-    init_label()
-    # game_over = False
 #
 def init_label():
     label_text.set("オセロゲーム")
@@ -868,32 +879,17 @@ def create_buttons(f, num_buttons_per_row, num_rows):
     for i in range(num_rows):
         for j in range(num_buttons_per_row):
             button_number = 1 * num_buttons_per_row + j + 1
-            button = tk.Button(f, textvariable=all_button_labels[i][j],command=lambda:button_clicked(i,j) height=3, width=3)
+            button = tk.Button(f, textvariable=all_button_labels[i][j], height=3, width=3)
+            # ,command=lambda:button_clicked(i,j) )
             button.grid(row=i+1, column=j)
 create_buttons(f, num_buttons_per_row, num_rows)
 #
-# resetボタンの作成とウィジェットの割付
-br = tk.Button(f, text='Reset',command=reset)
+# start_reset_button上のStringVar変数の作成
+start_reset_button_text = tk.StringVar(f)
+start_reset_button_text.set("START")
+# START_RESETボタンの作成とウィジェットの割付
+br = tk.Button(f, textvariable=start_reset_button_text, command = lambda:start_reset(start_reset_button_text))
 br.grid(row=9, column=0, columnspan=8)
-
-# command=lambda:buttun_clicked(i,j),
-# b1 = tk.Button(f, textvariable=all_button_labels[0][0], command=lambda:button_clicked(0,0), height=3, width=3)
-# b2 = tk.Button(f, textvariable=all_button_labels[0][1], command=lambda:button_clicked(0,1), height=3, width=3)
-# b3 = tk.Button(f, textvari#able=button_labels[0][2], command=lambda:button_clicked(0,2), height=3, width=3)
-# b4 = tk.Button(f, textvariable=button_labels[1][0], command=lambda:button_clicked(1,0), height=3, width=3)
-# b5 = tk.Button(f, textvariable=button_labels[1][1], command=lambda:button_clicked(1,1), height=3, width=3)
-# b6 = tk.Button(f, textvariable=button_labels[1][2], command=lambda:button_clicked(1,2), height=3, width=3)
-# b7 = tk.Button(f, textvariable=button_labels[2][0], command=lambda:button_clicked(2,0), height=3, width=3)
-# b8 = tk.Button(f, textvariable=button_labels[2][1], command=lambda:button_clicked(2,1), height=3, width=3)
-# b9 = tk.Button(f, textvariable=button_labels[2][2], command=lambda:button_clicked(2,2), height=3, width=3)
-# br = tk.Button(f, text='Reset',command=reset)
-        
-# Grid 型ジオメトリマネージャによるウィジェットの割付
-# for i in range(8):
-#     for j in range(8):
-# b1.grid(row=1, column=0)
-# b2.grid(row=1, column=1)
-
 
 # ラベル上のテキストを変換するStringVarのインスタンス
 label_text = tk.StringVar(f)
