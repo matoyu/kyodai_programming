@@ -19,8 +19,8 @@ if turn == SECOND:
 board = [[0,0,0,0,0,0,0,0,],
          [0,0,0,0,0,0,0,0],
          [0,0,0,0,0,0,0,0],
-         [0,0,0,1,2,0,0,0],
-         [0,0,0,2,1,0,0,0],
+         [0,0,0,0,0,0,0,0],
+         [0,0,0,0,0,0,0,0],
          [0,0,0,0,0,0,0,0],
          [0,0,0,0,0,0,0,0], 
          [0,0,0,0,0,0,0,0]]
@@ -50,9 +50,11 @@ def change_turn():
     if turn == FIRST:
         turn = SECOND
         opponent_turn = FIRST
+        show_turn_gui()
     elif turn == SECOND:
         turn = FIRST
         opponent_turn = SECOND
+        show_turn_gui()
 
 # 盤面を表示するGUI
 def show_board_gui():
@@ -60,13 +62,13 @@ def show_board_gui():
     for i in range(8):
         for j in range(8):
             if board[i][j] == OPEN:
-                all_button_labels[i][j].set(' ')
+                all_button_texts[i][j].set(' ')
             elif board[i][j] == FIRST:
-                all_button_labels[i][j].set('○')
+                all_button_texts[i][j].set('○')
             elif board[i][j] == SECOND:
-                all_button_labels[i][j].set('●')
+                all_button_texts[i][j].set('●')
             else:
-                all_button_labels[i][j].set('?')
+                all_button_texts[i][j].set('?')
 
 def init_board():
     for i in range(8):
@@ -334,7 +336,7 @@ def check_board_diagonal_downward(t):
     '対角右下方向に手番 t が置けるマスがあることを判定します'
     for i in range(8):
         for j in range(8):
-            print(f"Checking: {i}, {j}")
+            # print(f"Checking: {i}, {j}")
             if board[i][j] != OPEN:
                 continue
             set_board(i,j,t)
@@ -355,7 +357,7 @@ def check_board_diagonal_downward(t):
                     set_board_to_0(i, j)
                     continue
                 elif board[i+1][j+1] == opponent_turn:
-                    print("1")
+                    # print("1")
                     # t 番手から右斜め下方向に２以上離れたマスを判定する範囲を決める
                     m = i - j
                     # 対角線以下
@@ -367,21 +369,21 @@ def check_board_diagonal_downward(t):
                         m = 8 - m
                     # 以下のfor文で、マスの縦列の始まりをt番手の１つ次に設定
                     l = j+1
-                    print("2")
-                    print("i:", i, "m:", m)
+                    # print("2")
+                    # print("i:", i, "m:", m)
                     # t 番手から２以上離れたマスがある時の判定
                     for k in range(i+2, m):
-                        print(f"INSIDE FOR LOOP -- k: {k} l: {l}")
+                        # print(f"INSIDE FOR LOOP -- k: {k} l: {l}")
                         l = l+1
                         if board[k][l] == OPEN:
                             break
                         elif board[k][l] == t:
                             place = [i, j]
                             correct_place_list.append(place)
-                            print("INSIDE FOR LOOP -- cpl:", correct_place_list)
+                            # print("INSIDE FOR LOOP -- cpl:", correct_place_list)
                             break
                         elif board[k][l] == opponent_turn:
-                            print("INSIDE FOR LOOP -- arrived")
+                            # print("INSIDE FOR LOOP -- arrived")
                             if k == 7 or l == 7:
                                 break
                             else:
@@ -809,23 +811,97 @@ def is_win():
         label_text.set("引き分けです")
 #
 #START_RESETボタンが押された時の処理
-def start_reset(start_reset_button_text):
-    print(start_reset_button_text)
-    print(start_reset_button_text.get())
+def start_reset(start_reset_button_text, label_text):
     if start_reset_button_text.get() == "START":
         start_reset_button_text.set("RESET")
         start_board()
         show_board_gui()
-    elif start_reset_button_text.get() == "RESET":
+        turn = FIRST
+        show_turn_gui()
+        check_board(turn)
+        print("start_reset_list:", correct_place_list)
+    elif start_reset_button_text.get() == "RESET": 
         start_reset_button_text.set("START")
+        label_text.set("オセロゲーム")
         init_turn()
         init_board()
         show_board_gui()
+#
+# 盤面を検査して、置けるマスのリストを作成、ラベルに番手を表示またはパス、パス回数と番手を表示
+def check_board(turn):
+    global correct_place_list
+    init_list()
+    print(correct_place_list)
+    print(turn)
+    check_board_vertical_upward(turn)
+    check_board_vertical_downward(turn)
+    check_board_horizontal_left(turn)
+    check_board_horizontal_right(turn)
+    check_board_diagonal_upward(turn)
+    check_board_diagonal_downward(turn)
+    check_board_inverse_diagonal_upward(turn)
+    check_board_inverse_diagonal_downward(turn)
+    print(correct_place_list)
+
+    # 手番turnが置けるマスがなく、置けるマスのリストが空
+    # if len(correct_place_list) == 0: 
+    #     pass_count += 1
+    #     label_text.set("パス１")
+#
+def button_clicked(row, column, turn):
+    # pass_count = 0
+    # while True:
+        # row = i
+        # column = j
+        # [row, column]がcorrect_place_listにあるかどうかをチェックし、あれば手番turnを登録
+    square_to_check = [row, column]
+    print(correct_place_list)
+    print(square_to_check)
+    if not square_to_check in correct_place_list:
+        label_text.set("そこには置けません")
+        return
+    # else:
+    #         break
+    result = set_board(row, column, turn)
+    # if turn == FIRST:
+    #     firstlog.append(square_to_check)
+    # elif turn == SECOND:
+    #     secondlog.append(square_to_check)
+        # print("firstslog:", firstlog)
+        # print("secondlog:", secondlog)
+    print(result)
+    if result == 'OK':
+        # 手番turnが置いたマスのrow, columnから縦、横、斜めを再検査し、相手の石を挟むことができればマスに手番turnを登録する
+        check_changeable_place_vertical_upward(row, column, turn)
+        check_changeable_place_vertical_downward(row, column, turn)
+        check_changeable_place_horizontal_left(row, column, turn)
+        check_changeable_place_horizontal_right(row, column, turn)
+        check_changeable_place_diagonal_upward(row, column, turn)   
+        check_changeable_place_diagonal_downward(row, column, turn)                
+        check_changeable_place_inverse_diagonal_upward(row, column, turn)
+        check_changeable_place_inverse_diagonal_downward(row, column, turn)
+        show_board_gui()
+        print("a")
+        if is_full():
+            is_win()
+        else:
+            print(turn)
+            change_turn()
+            print(turn)
+            print("b")
+            check_board(turn)
+            print("c")
+            if len(correct_place_list) != 0:
+                show_turn_gui()
+            else:
+                return
+
+
 
     # for i in button_labels:
     #     for j in i:
     #         j.set(' ')
-    init_label()
+    # init_label()
     # game_over = False
 
         #    global game_over
@@ -860,17 +936,17 @@ f.grid()
 #
 # StringVarのインスタンスを格納する変数button_labelsのリスト
 # 8行全てのStringVar変数のリスト
-all_button_labels = []
+all_button_texts = []
 for i in range(8):
     # １行８個分のStringVar変数のリスト
-    button_labels = []
+    button_texts = []
     for j in range(8):
-        button_labels.append(tk.StringVar(f))
-    all_button_labels.append(button_labels)
+        button_texts.append(tk.StringVar(f))
+    all_button_texts.append(button_texts)
 # print(all_button_labels)
 #
 # button上の表示を全てスペースにする
-for i in all_button_labels:
+for i in all_button_texts:
     for j in i:
        j.set(' ')
 #
@@ -879,18 +955,10 @@ def create_buttons(f, num_buttons_per_row, num_rows):
     for i in range(num_rows):
         for j in range(num_buttons_per_row):
             button_number = 1 * num_buttons_per_row + j + 1
-            button = tk.Button(f, textvariable=all_button_labels[i][j], height=3, width=3)
-            # ,command=lambda:button_clicked(i,j) )
+            button = tk.Button(f, textvariable=all_button_texts[i][j], command=lambda i=i, j=j: button_clicked(i,j,turn), height=3, width=3)
             button.grid(row=i+1, column=j)
 create_buttons(f, num_buttons_per_row, num_rows)
 #
-# start_reset_button上のStringVar変数の作成
-start_reset_button_text = tk.StringVar(f)
-start_reset_button_text.set("START")
-# START_RESETボタンの作成とウィジェットの割付
-br = tk.Button(f, textvariable=start_reset_button_text, command = lambda:start_reset(start_reset_button_text))
-br.grid(row=9, column=0, columnspan=8)
-
 # ラベル上のテキストを変換するStringVarのインスタンス
 label_text = tk.StringVar(f)
 label_text.set("オセロゲーム")
@@ -899,4 +967,11 @@ label_text.set("オセロゲーム")
 l = tk.Label(f, textvariable=label_text, height = 3)
 l.grid(row=0, column=0, columnspan=8)
 
+# start_reset_button上のStringVar変数の作成
+start_reset_button_text = tk.StringVar(f)
+start_reset_button_text.set("START")
+# START_RESETボタンの作成とウィジェットの割付
+br = tk.Button(f, textvariable=start_reset_button_text, command = lambda:start_reset(start_reset_button_text, label_text))
+br.grid(row=9, column=0, columnspan=8)
+#
 root.mainloop()

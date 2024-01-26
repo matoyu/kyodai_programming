@@ -1,3 +1,8 @@
-for k in range(7, -1, -1):
-    print(k)
-    
+buttons = [[button, button, button, button],
+           [button, button, button, button],
+           [button, button, button, button],
+           [button, button, button, button]]
+
+
+buttons.append
+buttons[i][j]

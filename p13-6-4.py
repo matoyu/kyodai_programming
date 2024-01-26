@@ -378,7 +378,7 @@ def check_board_diagonal_downward(t):
     '対角右下方向に手番 t が置けるマスがあることを判定します'
     for i in range(8):
         for j in range(8):
-            print(f"Checking: {i}, {j}")
+            # print(f"Checking: {i}, {j}")
             if board[i][j] != OPEN:
                 continue
             set_board(i,j,t)
@@ -399,7 +399,7 @@ def check_board_diagonal_downward(t):
                     set_board_to_0(i, j)
                     continue
                 elif board[i+1][j+1] == opponent_turn:
-                    print("1")
+                    # print("1")
                     # t 番手から右斜め下方向に２以上離れたマスを判定する範囲を決める
                     m = i - j
                     # 対角線以下
@@ -411,21 +411,21 @@ def check_board_diagonal_downward(t):
                         m = 8 - m
                     # 以下のfor文で、マスの縦列の始まりをt番手の１つ次に設定
                     l = j+1
-                    print("2")
-                    print("i:", i, "m:", m)
+                    # print("2")
+                    # print("i:", i, "m:", m)
                     # t 番手から２以上離れたマスがある時の判定
                     for k in range(i+2, m):
-                        print(f"INSIDE FOR LOOP -- k: {k} l: {l}")
+                        # print(f"INSIDE FOR LOOP -- k: {k} l: {l}")
                         l = l+1
                         if board[k][l] == OPEN:
                             break
                         elif board[k][l] == t:
                             place = [i, j]
                             correct_place_list.append(place)
-                            print("INSIDE FOR LOOP -- cpl:", correct_place_list)
+                            # print("INSIDE FOR LOOP -- cpl:", correct_place_list)
                             break
                         elif board[k][l] == opponent_turn:
-                            print("INSIDE FOR LOOP -- arrived")
+                            # print("INSIDE FOR LOOP -- arrived")
                             if k == 7 or l == 7:
                                 break
                             else:
@@ -890,7 +890,6 @@ def play():
         # 手番turnが置けるマスがなく、置けるマスのリストが空
         if len(correct_place_list) == 0: 
             print('Pass')
-
             pass_count += 1
             # 双方置けるマスがなく、勝敗判定に移る
             if pass_count == 2:
