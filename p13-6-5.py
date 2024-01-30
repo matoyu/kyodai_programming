@@ -881,16 +881,16 @@ def button_clicked(row, column):
         check_changeable_place_inverse_diagonal_upward(row, column, turn)
         check_changeable_place_inverse_diagonal_downward(row, column, turn)
         show_board_gui()
-        # print("a")
+        print("a")
         if is_full():
             is_win()
         else:
             print(turn)
             change_turn()
             print(turn)
-            # print("b")
+            print("b")
             check_board(turn)
-            # print("c")
+            print("c")
             if len(correct_place_list) != 0:
                 show_turn_gui()
             else:
