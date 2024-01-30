@@ -2,6 +2,8 @@
 # オセロゲーム(GUI)
 #
 import tkinter as tk
+from tkinter.messagebox import messagebox
+
 # 定数の定義
 
 OPEN = 0
@@ -848,8 +850,7 @@ def check_board(turn):
     #     pass_count += 1
     #     label_text.set("パス１")
 #
-def button_clicked(row, column, turn):
-    # pass_count = 0
+def button_clicked(row, column):
     # while True:
         # row = i
         # column = j
@@ -881,20 +882,42 @@ def button_clicked(row, column, turn):
         check_changeable_place_inverse_diagonal_upward(row, column, turn)
         check_changeable_place_inverse_diagonal_downward(row, column, turn)
         show_board_gui()
-        print("a")
         if is_full():
             is_win()
         else:
             print(turn)
             change_turn()
             print(turn)
-            print("b")
+            pass_count = 0
             check_board(turn)
-            print("c")
+            if len(correct_place_list) == 0: 
+                pass_count += 1
+                # メッセージボックスにパス１を表示
+                # OKをクリック、ボックスを閉じる
+
+            print('Pass')
+            pass_count += 1
+            # 双方置けるマスがなく、勝敗判定に移る
+            if pass_count == 2:
+                is_win()
+                break
             if len(correct_place_list) != 0:
                 show_turn_gui()
             else:
-                return
+                pass_count += 1
+                # メッセージボックスにパス１を表示
+                # OKをクリック、ボックスを閉じる
+                change_turn()
+                check_board(turn)
+                if len(correct_place_list) != 0:
+
+                else:
+                    pass_count+
+    
+def on_ok_click():
+    messagebox.showinfo(title="残念！", message="置けるマスがないのでパス１")
+
+
 
 
 
@@ -903,26 +926,6 @@ def button_clicked(row, column, turn):
     #         j.set(' ')
     # init_label()
     # game_over = False
-
-        #    global game_over
-#     if board[i][j] != OPEN:
-#         label_text.set("Error")
-#         return
-#     if game_over == True:
-#         return
-#     set_board(i, j, turn)
-#     print(show_board())
-#     show_board_gui()
-#     if is_draw():
-#         game_over = True
-#         label_text.set("引き分け")
-#     if is_win_actual(turn):
-#         game_over = True
-#         if turn == FIRST:
-#             label_text.set("⭕の勝ち")    
-#         elif turn == SECOND:
-#             label_text.set("❌の勝ち")
-#     change_turn()
 #
 def init_label():
     label_text.set("オセロゲーム")
@@ -955,7 +958,7 @@ def create_buttons(f, num_buttons_per_row, num_rows):
     for i in range(num_rows):
         for j in range(num_buttons_per_row):
             button_number = 1 * num_buttons_per_row + j + 1
-            button = tk.Button(f, textvariable=all_button_texts[i][j], command=lambda i=i, j=j: button_clicked(i,j,turn), height=3, width=3)
+            button = tk.Button(f, textvariable=all_button_texts[i][j], command=lambda i=i, j=j: button_clicked(i,j), height=3, width=3)
             button.grid(row=i+1, column=j)
 create_buttons(f, num_buttons_per_row, num_rows)
 #

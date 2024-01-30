@@ -1,8 +1,5 @@
-buttons = [[button, button, button, button],
-           [button, button, button, button],
-           [button, button, button, button],
-           [button, button, button, button]]
 
+from tkinter import messagebox
 
-buttons.append
-buttons[i][j]
+# メッセージボックス（情報） 
+messagebox.showinfo('残念', '置けるマスがないのでパス１')
