@@ -2,6 +2,7 @@
 # オセロゲーム(GUI)
 #
 import tkinter as tk
+from tkinter import messagebox
 # 定数の定義
 
 OPEN = 0
@@ -881,20 +882,36 @@ def button_clicked(row, column):
         check_changeable_place_inverse_diagonal_upward(row, column, turn)
         check_changeable_place_inverse_diagonal_downward(row, column, turn)
         show_board_gui()
-        print("a")
+        # print("a")
         if is_full():
             is_win()
         else:
-            print(turn)
+            # print(turn)
             change_turn()
-            print(turn)
-            print("b")
+            # print(turn)
+            # print("b")
             check_board(turn)
-            print("c")
-            if len(correct_place_list) != 0:
-                show_turn_gui()
+            # print("c")
+            # 置けるマスがない、correct_place_listが空
+            if len(correct_place_list) == 0: 
+                # pass_count += 1
+                messagebox.showinfo('information', '置けるマスがないのでパス１')
+                # OKをクリックしてボックスを閉じる
+                change_turn()
+                check_board(turn)
+                # 再び置けるマスがない、correct_place_listが空
+                if len(correct_place_list) == 0:
+                    # pass_count += 1
+                    messagebox.showinfor('information', '置けるますがないのでパス２')
+                    # OKをクリックしてボックスを閉じる
+                    is_win()
+                # 置けるマスがある、correct_place_listに候補がある
+                else:
+                    show_turn_gui                   
+            # 置けるマスがある、correct_place_listに候補がある
             else:
-                return
+                # pass_count = 0
+                show_turn_gui()
 
 
 
@@ -904,26 +921,6 @@ def button_clicked(row, column):
     # init_label()
     # game_over = False
 
-        #    global game_over
-#     if board[i][j] != OPEN:
-#         label_text.set("Error")
-#         return
-#     if game_over == True:
-#         return
-#     set_board(i, j, turn)
-#     print(show_board())
-#     show_board_gui()
-#     if is_draw():
-#         game_over = True
-#         label_text.set("引き分け")
-#     if is_win_actual(turn):
-#         game_over = True
-#         if turn == FIRST:
-#             label_text.set("⭕の勝ち")    
-#         elif turn == SECOND:
-#             label_text.set("❌の勝ち")
-#     change_turn()
-#
 def init_label():
     label_text.set("オセロゲーム")
 
