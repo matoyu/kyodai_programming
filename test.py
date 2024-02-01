@@ -1,21 +1,14 @@
 import tkinter as tk
-from tkinter import *
-from tkinter import messagebox
 
-ws = Tk()
-ws.title('Python Guides')
-ws.geometry('300x200')
-ws.config(bg='#5FB691')
+def button_clicked():
+    button.config(image=clicked_image)
 
-def msg1():
-    messagebox.showinfo('information', 'Hi! You got a prompt.')
-    messagebox.showerror('error', 'Something went wrong!')
-    messagebox.showwarning('warning', 'accept T&C')
-    messagebox.askquestion('Ask Question', 'Do you want to continue?')
-    messagebox.askokcancel('Ok Cancel', 'Are You sure?')
-    messagebox.askyesno('Yes|No', 'Do you want to proceed?')
-    messagebox.askretrycancel('retry', 'Failed! want to try again?')
+root = tk.Tk()
 
-Button(ws, text='Click Me', command=msg1).pack(pady=50)
+default_image = tk.PhotoImage(file="default_image.png")
+clicked_image = tk.PhotoImage(file="clicked_image.png")
 
-ws.mainloop()
+button = tk.Button(root, image=default_image, command=button_clicked)
+button.pack()
+
+root.mainloop()

@@ -3,6 +3,7 @@
 #
 import tkinter as tk
 from tkinter import messagebox
+from PIL import Image, ImageTk
 # 定数の定義
 
 OPEN = 0
@@ -56,21 +57,24 @@ def change_turn():
         turn = FIRST
         opponent_turn = SECOND
         show_turn_gui()
-
+#
 # 盤面を表示するGUI
 def show_board_gui():
     '盤面を表す文字列を返す'
     for i in range(8):
         for j in range(8):
             if board[i][j] == OPEN:
-                all_button_texts[i][j].set(' ')
+                buttons[i][j].configure(image = tk_space_image)
+                # buttons[i][j] = tk_space_image
             elif board[i][j] == FIRST:
-                all_button_texts[i][j].set('○')
+                buttons[i][j].configure(image = tk_shiroishi_image)
+                # buttons[i][j].image = tk_shiroishi_image
             elif board[i][j] == SECOND:
-                all_button_texts[i][j].set('●')
-            else:
-                all_button_texts[i][j].set('?')
-
+                buttons[i][j].configure(image = tk_kuroishi_image)
+                # buttons[i][j].image = tk_kuroishi_image
+            # else:
+            #     button_texts[i][j].set('?')
+#
 def init_board():
     for i in range(8):
         for j in range(8):
@@ -173,7 +177,7 @@ def check_board_vertical_upward(t):
                         elif board[k][j] == t:
                             place = [i,j]
                             correct_place_list.append(place)
-                            print("cpl:", correct_place_list)
+                            # print("cpl:", correct_place_list)
                             break
                         elif board[k][j] == opponent_turn:
                             if k == 0:
@@ -208,7 +212,7 @@ def check_board_vertical_downward(t):
                         elif board[k][j] == t:
                             place = [i,j]
                             correct_place_list.append(place)
-                            print("cpl:", correct_place_list)
+                            # print("cpl:", correct_place_list)
                             break
                         elif board[k][j] == opponent_turn:
                             if k == 7:
@@ -243,7 +247,7 @@ def check_board_horizontal_left(t):
                         elif board[i][k] == t:
                             place = [i,j]
                             correct_place_list.append(place)
-                            print("cpl:", correct_place_list)
+                            # print("cpl:", correct_place_list)
                             break
                         elif board[i][k] == opponent_turn:
                             if k == 0:
@@ -278,7 +282,7 @@ def check_board_horizontal_right(t):
                         elif board[i][k] == t:
                             place = [i,j]
                             correct_place_list.append(place)
-                            print("cpl:", correct_place_list)
+                            # print("cpl:", correct_place_list)
                             break
                         elif board[i][k] == opponent_turn:
                             if k == 7:
@@ -324,7 +328,7 @@ def check_board_diagonal_upward(t):
                         elif board[k][l] == t:
                             place = [i, j]
                             correct_place_list.append(place)
-                            print("cpl:", correct_place_list)
+                            # print("cpl:", correct_place_list)
                             break
                         elif board[k][l] == opponent_turn:
                             if k == 0 or l == 0:
@@ -433,7 +437,7 @@ def check_board_inverse_diagonal_upward(t):
                         elif board[k][l] == t:
                             place = [i, j]
                             correct_place_list.append(place)
-                            print("cpl:", correct_place_list)
+                            # print("cpl:", correct_place_list)
                             break
                         elif board[k][l] == opponent_turn:
                             if k == 0 or l == 7:
@@ -481,7 +485,7 @@ def check_board_inverse_diagonal_downward(t):
                         elif board[k][l] == t:
                             place = [i, j]
                             correct_place_list.append(place)
-                            print("cpl:", correct_place_list)
+                            # print("cpl:", correct_place_list)
                             break
                         elif board[k][l] == opponent_turn:
                             if k == 7 or l == 0:
@@ -506,7 +510,7 @@ def check_changeable_place_vertical_upward(row, column, t):
         elif board[row-1][column] == opponent_turn:
             changeable_place = [row-1, column]
             changeable_place_list.append(changeable_place)
-            print("plf:", changeable_place_list)
+            # print("plf:", changeable_place_list)
             for k in range(row-2,-1, -1):
                 if board[k][column] == open:
                     break
@@ -520,7 +524,7 @@ def check_changeable_place_vertical_upward(row, column, t):
                     else:
                         changeable_place = [k, column]
                         changeable_place_list.append(changeable_place)
-                        print("pls:", changeable_place_list)                                                     
+                        # print("pls:", changeable_place_list)                                                     
 #
 # 手番tが登録されたrow, columnから縦下方向にひっくり返せるマスを検査し、相手方のマスに手番turnを登録
 def check_changeable_place_vertical_downward(row, column, t):
@@ -538,7 +542,7 @@ def check_changeable_place_vertical_downward(row, column, t):
         elif board[row+1][column] == opponent_turn:
             changeable_place =[row+1, column]
             changeable_place_list.append(changeable_place)
-            print("plf:", changeable_place_list)
+            # print("plf:", changeable_place_list)
             for k in range(row+2, 8):
                 if board[k][column] == OPEN:
                     break
@@ -551,7 +555,7 @@ def check_changeable_place_vertical_downward(row, column, t):
                     else:
                         changeable_place = [k, column]
                         changeable_place_list.append(changeable_place)  
-                        print("pls:", changeable_place_list)
+                        # print("pls:", changeable_place_list)
 #
 # 手番tが登録されたrow, columnから水平左方向にひっくり返せるマスを検査し、相手方のマスに手番turnを登録
 def check_changeable_place_horizontal_left(row, column, t):
@@ -568,7 +572,7 @@ def check_changeable_place_horizontal_left(row, column, t):
         elif board[row][column-1] == opponent_turn:
             changeable_place =[row, column-1]
             changeable_place_list.append(changeable_place)
-            print("plf:", changeable_place_list)
+            # print("plf:", changeable_place_list)
             for k in range(column-2 ,-1, -1):
                 if board [row][k] == OPEN:
                     break
@@ -581,7 +585,7 @@ def check_changeable_place_horizontal_left(row, column, t):
                     else:
                         changeable_place = [row, k]
                         changeable_place_list.append(changeable_place) 
-                        print("pls", changeable_place_list) 
+                        # print("pls", changeable_place_list) 
                         
 #          
 # 手番tが登録されたrow, columnから水平右方向にひっくり返せるマスを検査し、相手方のマスに手番turnを登録
@@ -599,7 +603,7 @@ def check_changeable_place_horizontal_right(row, column, t):
         elif board[row][column+1] == opponent_turn:
             changeable_place =[row, column+1]
             changeable_place_list.append(changeable_place)
-            print("plf:", changeable_place_list)
+            # print("plf:", changeable_place_list)
             for k in range(column+2, 8):
                 if board[row][k] == OPEN:
                     break
@@ -612,7 +616,7 @@ def check_changeable_place_horizontal_right(row, column, t):
                     else:
                         changeable_place = [row, k]
                         changeable_place_list.append(changeable_place) 
-                        print("pls:", changeable_place_list)                   
+                        # print("pls:", changeable_place_list)                   
 #
 # 手番turnが登録されたrow, columnから左斜め上方向にひっくり返せるマスを検査し、相手方のマスに手番tを登録
 def check_changeable_place_diagonal_upward(row, column, t):
@@ -632,7 +636,7 @@ def check_changeable_place_diagonal_upward(row, column, t):
         elif board[row-1][column-1] == opponent_turn:
             changeable_place = [row-1, column-1]
             changeable_place_list.append(changeable_place)
-            print("plf:", changeable_place_list)
+            # print("plf:", changeable_place_list)
             # 対角線より上のマスについては、検査するrowを０までとする
             m = row - column
             if m <= 0:
@@ -653,7 +657,7 @@ def check_changeable_place_diagonal_upward(row, column, t):
                     else:
                         changeable_place = [k, l]
                         changeable_place_list.append(changeable_place)  
-                        print("pls:", changeable_place_list)      
+                        # print("pls:", changeable_place_list)      
 #                   
 #            
 # 手番turnが登録されたrow, columnから右斜め下方向にひっくり返せるマスを検査し、相手方のマスに手番turnを登録 
@@ -674,7 +678,7 @@ def check_changeable_place_diagonal_downward(row, column, t):
             elif board[row+1][column+1] == opponent_turn:
                 changeable_place = [row+1, column+1]
                 changeable_place_list.append(changeable_place)
-                print("plf:", changeable_place_list)
+                # print("plf:", changeable_place_list)
                 # turn 番手から右斜め下方向のマスを判定する範囲を決める
                 m = row - column
                 # 対角線以下
@@ -700,7 +704,7 @@ def check_changeable_place_diagonal_downward(row, column, t):
                             else:
                                 changeable_place = [k, l]
                                 changeable_place_list.append(changeable_place) 
-                                print("pls:", changeable_place_list)      
+                                # print("pls:", changeable_place_list)      
 #
 # 手番turnが登録されたrow, columnから右斜め上方向にひっくり返せるマスを検査し、相手方のマスに手番turnを登録
 def check_changeable_place_inverse_diagonal_upward(row, column, t):
@@ -720,7 +724,7 @@ def check_changeable_place_inverse_diagonal_upward(row, column, t):
         elif board[row-1][column+1] == opponent_turn:
             changeable_place = [row-1, column+1]
             changeable_place_list.append(changeable_place)
-            print("plf:", changeable_place_list)
+            # print("plf:", changeable_place_list)
             # t 番手から右斜め上方向に２以上離れたマスを判定する範囲を決める
             m = row + column
             # 対角線以上
@@ -745,7 +749,7 @@ def check_changeable_place_inverse_diagonal_upward(row, column, t):
                     else:
                         changeable_place = [k, l]
                         changeable_place_list.append(changeable_place) 
-                        print("pls:", changeable_place_list)      
+                        # print("pls:", changeable_place_list)      
 #
 # 手番turnが登録されたrow, columnから左斜め下方向にひっくり返せるマスを検査し、相手方のマスに手番turnを登録
 def check_changeable_place_inverse_diagonal_downward(row, column, t):
@@ -765,7 +769,7 @@ def check_changeable_place_inverse_diagonal_downward(row, column, t):
         elif board[row+1][column-1] == opponent_turn:
             changeable_place = [row+1, column-1]
             changeable_place_list.append(changeable_place)
-            print("plf:", changeable_place_list)
+            # print("plf:", changeable_place_list)
             # t 番手から左斜め下方向に２以上離れたマスを判定する範囲を決める
             m = row + column
             # 対角線より下
@@ -787,7 +791,7 @@ def check_changeable_place_inverse_diagonal_downward(row, column, t):
                     else:
                         changeable_place = [k, l]
                         changeable_place_list.append(changeable_place)
-                        print("pls:", changeable_place_list)
+                        # print("pls:", changeable_place_list)
 #
 # 勝ちの判定
 def is_win():
@@ -820,7 +824,7 @@ def start_reset(start_reset_button_text, label_text):
         turn = FIRST
         show_turn_gui()
         check_board(turn)
-        print("start_reset_list:", correct_place_list)
+        # print("start_reset_list:", correct_place_list)
     elif start_reset_button_text.get() == "RESET": 
         start_reset_button_text.set("START")
         label_text.set("オセロゲーム")
@@ -832,8 +836,8 @@ def start_reset(start_reset_button_text, label_text):
 def check_board(turn):
     global correct_place_list
     init_list()
-    print(correct_place_list)
-    print(turn)
+    # print(correct_place_list)
+    # print(turn)
     check_board_vertical_upward(turn)
     check_board_vertical_downward(turn)
     check_board_horizontal_left(turn)
@@ -842,7 +846,7 @@ def check_board(turn):
     check_board_diagonal_downward(turn)
     check_board_inverse_diagonal_upward(turn)
     check_board_inverse_diagonal_downward(turn)
-    print(correct_place_list)
+    # print(correct_place_list)
 
     # 手番turnが置けるマスがなく、置けるマスのリストが空
     # if len(correct_place_list) == 0: 
@@ -856,8 +860,6 @@ def button_clicked(row, column):
         # column = j
         # [row, column]がcorrect_place_listにあるかどうかをチェックし、あれば手番turnを登録
     square_to_check = [row, column]
-    print(correct_place_list)
-    print(square_to_check)
     if not square_to_check in correct_place_list:
         label_text.set("そこには置けません")
         return
@@ -870,8 +872,9 @@ def button_clicked(row, column):
     #     secondlog.append(square_to_check)
         # print("firstslog:", firstlog)
         # print("secondlog:", secondlog)
-    print(result)
+    # print(result)
     if result == 'OK':
+        print(row, column)
         # 手番turnが置いたマスのrow, columnから縦、横、斜めを再検査し、相手の石を挟むことができればマスに手番turnを登録する
         check_changeable_place_vertical_upward(row, column, turn)
         check_changeable_place_vertical_downward(row, column, turn)
@@ -924,36 +927,61 @@ def button_clicked(row, column):
 def init_label():
     label_text.set("オセロゲーム")
 
+def resize_image(image, width, height):
+    return image.resize((width, height), Image.Resampling.LANCZOS)
+
 # tkinter での画面の構成, ここからGUI
 num_buttons_per_row = 8
 num_rows = 8
 root = tk.Tk()
 f = tk.Frame(root)
-f.grid()        
+f.grid()    
 #
-# StringVarのインスタンスを格納する変数button_labelsのリスト
-# 8行全てのStringVar変数のリスト
-all_button_texts = []
-for i in range(8):
-    # １行８個分のStringVar変数のリスト
-    button_texts = []
-    for j in range(8):
-        button_texts.append(tk.StringVar(f))
-    all_button_texts.append(button_texts)
+# オセロ石のイメージを読み込み、サイズを変更
+# 白石
+original_shiroishi_image = Image.open("オセロ白石.png")
+resized_shiroishi_image = resize_image(original_shiroishi_image, 70, 70) 
+tk_shiroishi_image = ImageTk.PhotoImage(resized_shiroishi_image)
+# 黒石
+original_kuroishi_image = Image.open("オセロ黒石.png")
+resized_kuroishi_image = resize_image(original_kuroishi_image, 70, 70)
+tk_kuroishi_image = ImageTk.PhotoImage(resized_kuroishi_image)
+# スペース
+original_space_image = Image.open("オセロスペース.png")
+resized_space_image = resize_image(original_space_image, 70, 70)
+tk_space_image = ImageTk.PhotoImage(resized_space_image)
+#
+# # StringVarのインスタンスを格納する変数button_labelsのリスト
+# # 8行全てのStringVar変数のリスト
+# all_button_texts = []
+# for i in range(8):
+#     # １行８個分のStringVar変数のリスト
+#     button_texts = []
+#     for j in range(8):
+#         button_texts.append(tk.StringVar(f))
+#     all_button_texts.append(button_texts)
 # print(all_button_labels)
 #
-# button上の表示を全てスペースにする
-for i in all_button_texts:
-    for j in i:
-       j.set(' ')
+# # button上の表示を全てスペースにする
+# for i in all_button_texts:
+#     for j in i:
+#        j.set(' ')
 #
+
+buttons = []
+
 # ウィジェットの作成
 def create_buttons(f, num_buttons_per_row, num_rows):
+    global buttons
     for i in range(num_rows):
+        button_row = []
         for j in range(num_buttons_per_row):
-            button_number = 1 * num_buttons_per_row + j + 1
-            button = tk.Button(f, textvariable=all_button_texts[i][j], command=lambda i=i, j=j: button_clicked(i,j), height=3, width=3)
+            # button_number = 1 * num_buttons_per_row + j + 1
+            button = tk.Button(f, image = tk_space_image, command=lambda i=i, j=j: button_clicked(i,j), highlightbackground = '#000000')
             button.grid(row=i+1, column=j)
+            button_row.append(button)
+        buttons.append(button_row)
+
 create_buttons(f, num_buttons_per_row, num_rows)
 #
 # ラベル上のテキストを変換するStringVarのインスタンス
@@ -961,14 +989,14 @@ label_text = tk.StringVar(f)
 label_text.set("オセロゲーム")
 
 # 勝敗を表示するウィジェット
-l = tk.Label(f, textvariable=label_text, height = 3)
+l = tk.Label(f, textvariable=label_text, height = 2, font = ('Helvetica, 28'))
 l.grid(row=0, column=0, columnspan=8)
 
 # start_reset_button上のStringVar変数の作成
 start_reset_button_text = tk.StringVar(f)
 start_reset_button_text.set("START")
 # START_RESETボタンの作成とウィジェットの割付
-br = tk.Button(f, textvariable=start_reset_button_text, command = lambda:start_reset(start_reset_button_text, label_text))
+br = tk.Button(f, textvariable=start_reset_button_text, command = lambda:start_reset(start_reset_button_text, label_text), height = 2, width = 3, font = ('Helvetica, 15'))
 br.grid(row=9, column=0, columnspan=8)
 #
 root.mainloop()
