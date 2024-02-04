@@ -29,6 +29,9 @@ board = [[0,0,0,0,0,0,0,0,],
 #
 log = []
 #
+def init_log():
+    log = []
+#
 def show_turn_gui():
     '手番をlabel上に表示'
     if turn == FIRST:
@@ -851,6 +854,7 @@ def start_reset(start_reset_button_text, label_text):
         label_text.set("オセロゲーム")
         init_turn()
         init_board()
+        init_log()
         show_board_gui()
 #
 # 盤面を検査して、置けるマスのリストを作成、ラベルに番手を表示またはパス、パス回数と番手を表示
@@ -926,7 +930,7 @@ def button_clicked(row, column):
                 is_win()
             # 置けるマスがある、correct_place_listに候補がある
             else:
-                show_turn_gui                   
+                show_turn_gui()                   
         # 置けるマスがある、correct_place_listに候補がある
         else:
             # pass_count = 0
