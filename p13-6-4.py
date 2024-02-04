@@ -920,7 +920,7 @@ def replay_log(log):
         elif len(m) == 2:
             print("RESULT IN LOG: ", m[0], m[1])
 
-replay_log(log)       
+# replay_log(log)       
 
 
 # 端末への入力を用いて、入力の検査をします. 正しい入力が得られた場合は、ひっくり返せるマスに手番 t を登録します
@@ -945,8 +945,14 @@ def play():
         if len(correct_place_list) == 0: 
             print('Pass')
             pass_count += 1
+            # 手番を交代する
+            if pass_count == 1:
+                pass_record = ["pass1"]
+                log.append(pass_record)
             # 双方置けるマスがなく、勝敗判定に移る
-            if pass_count == 2:
+            elif pass_count == 2:
+                pass_record = ["pass2"]
+                log.append(pass_record)
                 is_win()
                 break
             # 手番側のみ置けるマスがないため、相手に手番を交代する
@@ -1003,6 +1009,6 @@ def play():
 #     check_changeable_place_vertical_upward(6, 3, 1)
 #     print(show_board())
 
-# play()
+play()
 
 # test()
