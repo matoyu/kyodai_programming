@@ -27,8 +27,7 @@ board = [[0,0,0,0,0,0,0,0,],
          [0,0,0,0,0,0,0,0], 
          [0,0,0,0,0,0,0,0]]
 #
-log = [[4, 2, 1], [5, 4, 2], [5, 5, 1], [5, 6, 2], [6, 6, 1], [7, 6, 2], [7, 7, 1], [5, 2, 2], [5, 7, 1], [4, 5, 2], [4, 6, 1], [3, 6, 2], [4, 7, 1], [2, 2, 2], [5, 3, 1], [3, 2, 2], [2, 4, 1], [3, 5, 2], [2, 5, 1], [6, 4, 2], [7, 4, 1], [2, 6, 2], [3, 7, 1], [6, 5, 2], [6, 7, 1], [1, 4, 2], [0, 4, 1], [2, 3, 2], [6, 1, 1], [5, 1, 2], [5, 0, 1], [6, 0, 2], [7, 0, 1], [7, 1, 2], [1, 5, 1], [6, 2, 2], [6, 3, 1], [7, 2, 2], [7, 3, 1], [0, 5, 2], [7, 5, 1], [0, 3, 2], [1, 2, 1], [1, 6, 2], [0, 7, 1], [2, 1, 2], [2, 0, 1], [3, 0, 2], [4, 0, 1], [1, 7, 2], [2, 7, 1], [4, 1, 2], [3, 1, 1], ['pass1'], [1, 3, 1], ['pass1'], [1, 1, 1], ['pass2']]
-
+log = []
 #
 def init_log():
     log = []
@@ -852,7 +851,7 @@ def start_reset(start_reset_button_text, label_text):
         start_reset_button_text.set("RESET")
         start_board()
         show_board_gui()
-        # init_log()
+        init_log()
         turn = FIRST
         show_turn_gui()
         check_board(turn)
@@ -862,9 +861,9 @@ def start_reset(start_reset_button_text, label_text):
         label_text.set("オセロゲーム")
         init_turn()
         init_board()
-        # init_log()
+        init_log()
         show_board_gui()
-    replay_log(log)
+    # replay_log(log)
 #
 # 盤面を検査して、置けるマスのリストを作成、ラベルに番手を表示またはパス、パス回数と番手を表示
 def check_board(turn):
