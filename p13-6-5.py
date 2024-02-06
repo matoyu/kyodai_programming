@@ -27,7 +27,8 @@ board = [[0,0,0,0,0,0,0,0,],
          [0,0,0,0,0,0,0,0], 
          [0,0,0,0,0,0,0,0]]
 #
-log = []
+log = [[4, 2, 1], [5, 4, 2], [5, 5, 1], [5, 6, 2], [6, 6, 1], [7, 6, 2], [7, 7, 1], [5, 2, 2], [5, 7, 1], [4, 5, 2], [4, 6, 1], [3, 6, 2], [4, 7, 1], [2, 2, 2], [5, 3, 1], [3, 2, 2], [2, 4, 1], [3, 5, 2], [2, 5, 1], [6, 4, 2], [7, 4, 1], [2, 6, 2], [3, 7, 1], [6, 5, 2], [6, 7, 1], [1, 4, 2], [0, 4, 1], [2, 3, 2], [6, 1, 1], [5, 1, 2], [5, 0, 1], [6, 0, 2], [7, 0, 1], [7, 1, 2], [1, 5, 1], [6, 2, 2], [6, 3, 1], [7, 2, 2], [7, 3, 1], [0, 5, 2], [7, 5, 1], [0, 3, 2], [1, 2, 1], [1, 6, 2], [0, 7, 1], [2, 1, 2], [2, 0, 1], [3, 0, 2], [4, 0, 1], [1, 7, 2], [2, 7, 1], [4, 1, 2], [3, 1, 1], ['pass1'], [1, 3, 1], ['pass1'], [1, 1, 1], ['pass2']]
+
 #
 def init_log():
     log = []
@@ -833,12 +834,17 @@ def is_win():
                 second_count += 1 
     print("○は", first_count)
     print("●は", second_count)
+    white_number = str(first_count)
+    black_number = str(second_count)
     if first_count > second_count:
-        label_text.set("白の勝ちです")
+        combined_result = "白は" + white_number + "黒は" + black_number + "で白の勝ちです"
+        label_text.set(combined_result)
     elif second_count > first_count:
-        label_text.set("黒の勝ちです")
+        combined_result = "白は" + white_number + "黒は" + black_number + "で黒の勝ちです"
+        label_text.set(combined_result)
     elif first_count == second_count:
-        label_text.set("引き分けです")
+        combined_result = "白は" + white_number + "黒は" + black_number + "で引き分けです"
+        label_text.set(combined_result)
 #
 #START_RESETボタンが押された時の処理
 def start_reset(start_reset_button_text, label_text):
@@ -846,6 +852,7 @@ def start_reset(start_reset_button_text, label_text):
         start_reset_button_text.set("RESET")
         start_board()
         show_board_gui()
+        # init_log()
         turn = FIRST
         show_turn_gui()
         check_board(turn)
@@ -855,8 +862,9 @@ def start_reset(start_reset_button_text, label_text):
         label_text.set("オセロゲーム")
         init_turn()
         init_board()
-        init_log()
+        # init_log()
         show_board_gui()
+    replay_log(log)
 #
 # 盤面を検査して、置けるマスのリストを作成、ラベルに番手を表示またはパス、パス回数と番手を表示
 def check_board(turn):
@@ -909,6 +917,7 @@ def button_clicked(row, column):
     # print("a")
     if is_full():
         is_win()
+        print("log", log)
     else:
     # print(turn)
         change_turn()
@@ -922,6 +931,8 @@ def button_clicked(row, column):
             root.update()
             messagebox.showinfo('information', '置けるマスがないのでパス１')
             # OKをクリックしてボックスを閉じる
+            pass_record = ["pass1"]
+            log.append(pass_record)
             change_turn()
             check_board(turn)
             # 再び置けるマスがない、correct_place_listが空
@@ -930,7 +941,10 @@ def button_clicked(row, column):
                 root.update()
                 messagebox.showinfo('information', '置けるますがないのでパス２')
                 # OKをクリックしてボックスを閉じる
+                pass_record = ["pass2"]
+                log.append(pass_record)
                 is_win()
+                print("log",log)
             # 置けるマスがある、correct_place_listに候補がある
             else:
                 show_turn_gui()                   
@@ -939,13 +953,32 @@ def button_clicked(row, column):
             # pass_count = 0
             show_turn_gui()
 
+def replay_log(log):
+    # init_board()
+    # init_turn()
+    # show_board_gui()
+    print("replay_log", log)
+    for m in log:
+        print(m)
+        if len(m) == 3:
+            print(m[0], m[1], m[2])
+            # set_board(m[0], m[1], m[2])
+            # check_changeable_place_vertical_upward(m[0], m[1], m[2])
+            # check_changeable_place_vertical_downward(m[0], m[1], m[2])
+            # check_changeable_place_horizontal_left(m[0], m[1], m[2])
+            # check_changeable_place_horizontal_right(m[0], m[1], m[2])
+            # check_changeable_place_diagonal_upward(m[0], m[1], m[2])   
+            # check_changeable_place_diagonal_downward(m[0], m[1], m[2])                
+            # check_changeable_place_inverse_diagonal_upward(m[0], m[1], m[2])
+            # check_changeable_place_inverse_diagonal_downward(m[0], m[1], m[2])
+            # show_board_gui()
+            button_clicked(m[0], m[1])
+        elif len(m) == 1:
+            continue
+        elif len(m) == 2:
+            continue
+            # print("RESULT IN LOG: ", m[0], m[1])
 
-
-    # for i in button_labels:
-    #     for j in i:
-    #         j.set(' ')
-    # init_label()
-    # game_over = False
 
 def init_label():
     label_text.set("オセロゲーム")
