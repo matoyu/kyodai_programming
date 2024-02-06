@@ -76,6 +76,7 @@ def show_board_gui():
                 # buttons[i][j].image = tk_shiroishi_image
             elif board[i][j] == SECOND:
                 buttons[i][j].configure(image = tk_kuroishi_image)
+            # root.update()
                 # buttons[i][j].image = tk_kuroishi_image
             # else:
             #     button_texts[i][j].set('?')
@@ -918,6 +919,7 @@ def button_clicked(row, column):
         # 置けるマスがない、correct_place_listが空
         if len(correct_place_list) == 0: 
             # pass_count += 1
+            root.update()
             messagebox.showinfo('information', '置けるマスがないのでパス１')
             # OKをクリックしてボックスを閉じる
             change_turn()
@@ -925,7 +927,8 @@ def button_clicked(row, column):
             # 再び置けるマスがない、correct_place_listが空
             if len(correct_place_list) == 0:
                 # pass_count += 1
-                messagebox.showinfor('information', '置けるますがないのでパス２')
+                root.update()
+                messagebox.showinfo('information', '置けるますがないのでパス２')
                 # OKをクリックしてボックスを閉じる
                 is_win()
             # 置けるマスがある、correct_place_listに候補がある
