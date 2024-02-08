@@ -4,6 +4,8 @@
 import tkinter as tk
 from tkinter import messagebox
 from PIL import Image, ImageTk
+import pygame
+#
 # 定数の定義
 
 OPEN = 0
@@ -80,6 +82,12 @@ def show_board_gui():
                 # buttons[i][j].image = tk_kuroishi_image
             # else:
             #     button_texts[i][j].set('?')
+#
+def play_sound_effect(sound_file):
+    pygame.mixer.init()
+    pygame.mixer.music.load(sound_file)
+    pygame.mixer.music.play()
+
 #
 def init_board():
     for i in range(8):
@@ -838,12 +846,15 @@ def is_win():
     if first_count > second_count:
         combined_result = "白は" + white_number + "黒は" + black_number + "で白の勝ちです"
         label_text.set(combined_result)
+        play_sound_effect("レベルアップ.mp3")
     elif second_count > first_count:
         combined_result = "白は" + white_number + "黒は" + black_number + "で黒の勝ちです"
         label_text.set(combined_result)
+        play_sound_effect("レベルアップ.mp3")
     elif first_count == second_count:
         combined_result = "白は" + white_number + "黒は" + black_number + "で引き分けです"
         label_text.set(combined_result)
+        play_sound_effect("ジャン！.mp3")
 #
 #START_RESETボタンが押された時の処理
 def start_reset(start_reset_button_text, label_text):
@@ -895,6 +906,7 @@ def button_clicked(row, column):
     square_to_check = [row, column]
     if not square_to_check in correct_place_list:
         label_text.set("そこには置けません")
+        play_sound_effect("ビープ音1.mp3")
         return
     # else:
     #         break

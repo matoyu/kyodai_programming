@@ -1,14 +1,28 @@
-import tkinter as tk
+import pygame
+import time
 
-def button_clicked():
-    button.config(image=clicked_image)
+def main():
+    pygame.init()
+    pygame.mixer.init()
 
-root = tk.Tk()
+    # Load sound effects
+    explosion_sound = pygame.mixer.Sound("explosion.wav")
+    laser_sound = pygame.mixer.Sound("laser.wav")
 
-default_image = tk.PhotoImage(file="default_image.png")
-clicked_image = tk.PhotoImage(file="clicked_image.png")
+    try:
+        # Play the explosion sound effect
+        print("Playing explosion sound effect...")
+        explosion_sound.play()
+        time.sleep(2)  # Wait for 2 seconds
 
-button = tk.Button(root, image=default_image, command=button_clicked)
-button.pack()
+        # Play the laser sound effect
+        print("Playing laser sound effect...")
+        laser_sound.play()
+        time.sleep(2)  # Wait for 2 seconds
 
-root.mainloop()
+    finally:
+        pygame.mixer.quit()
+        pygame.quit()
+
+if __name__ == "__main__":
+    main()
