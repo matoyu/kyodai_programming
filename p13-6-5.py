@@ -941,6 +941,7 @@ def button_clicked(row, column):
             # pass_count += 1
             root.update()
             messagebox.showinfo('information', '置けるマスがないのでパス１')
+            play_sound_effect("間抜け４.mp3")
             # OKをクリックしてボックスを閉じる
             pass_record = ["pass1"]
             log.append(pass_record)
@@ -951,6 +952,7 @@ def button_clicked(row, column):
                 # pass_count += 1
                 root.update()
                 messagebox.showinfo('information', '置けるますがないのでパス２')
+                play_sound_effect("間抜け４.mp3")
                 # OKをクリックしてボックスを閉じる
                 pass_record = ["pass2"]
                 log.append(pass_record)
