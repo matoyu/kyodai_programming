@@ -846,15 +846,15 @@ def is_win():
     if first_count > second_count:
         combined_result = "白は" + white_number + "黒は" + black_number + "で白の勝ちです"
         label_text.set(combined_result)
-        play_sound_effect("レベルアップ.mp3")
+        play_sound_effect("win.mp3")
     elif second_count > first_count:
-        combined_result = "白は" + white_number + "黒は" + black_number + "で黒の勝ちです"
+        combined_result = "黒は" + black_number + "白は" + white_number + "で黒の勝ちです"
         label_text.set(combined_result)
-        play_sound_effect("レベルアップ.mp3")
+        play_sound_effect("win.mp3")
     elif first_count == second_count:
         combined_result = "白は" + white_number + "黒は" + black_number + "で引き分けです"
         label_text.set(combined_result)
-        play_sound_effect("ジャン！.mp3")
+        play_sound_effect("even.mp3")
 #
 #START_RESETボタンが押された時の処理
 def start_reset(start_reset_button_text, label_text):
@@ -862,6 +862,7 @@ def start_reset(start_reset_button_text, label_text):
         start_reset_button_text.set("RESET")
         start_board()
         show_board_gui()
+        play_sound_effect("place.mp3")
         init_log()
         turn = FIRST
         show_turn_gui()
@@ -898,15 +899,12 @@ def check_board(turn):
     #     label_text.set("パス１")
 #
 def button_clicked(row, column):
-    # pass_count = 0
-    # while True:
-        # row = i
-        # column = j
-        # [row, column]がcorrect_place_listにあるかどうかをチェックし、あれば手番turnを登録
+    '[row, column]がcorrect_place_listにあるかどうかをチェックし、あれば手番turnを登録'
+    play_sound_effect("place.mp3")
     square_to_check = [row, column]
     if not square_to_check in correct_place_list:
         label_text.set("そこには置けません")
-        play_sound_effect("ビープ音1.mp3")
+        play_sound_effect("error.mp3")
         return
     # else:
     #         break
@@ -939,9 +937,9 @@ def button_clicked(row, column):
         # 置けるマスがない、correct_place_listが空
         if len(correct_place_list) == 0: 
             # pass_count += 1
+            play_sound_effect("pass.mp3")
             root.update()
             messagebox.showinfo('information', '置けるマスがないのでパス１')
-            play_sound_effect("間抜け４.mp3")
             # OKをクリックしてボックスを閉じる
             pass_record = ["pass1"]
             log.append(pass_record)
@@ -950,9 +948,9 @@ def button_clicked(row, column):
             # 再び置けるマスがない、correct_place_listが空
             if len(correct_place_list) == 0:
                 # pass_count += 1
+                play_sound_effect("pass.mp3")
                 root.update()
                 messagebox.showinfo('information', '置けるますがないのでパス２')
-                play_sound_effect("間抜け４.mp3")
                 # OKをクリックしてボックスを閉じる
                 pass_record = ["pass2"]
                 log.append(pass_record)
