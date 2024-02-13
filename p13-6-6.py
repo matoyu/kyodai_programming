@@ -933,12 +933,12 @@ def button_clicked(row, column):
         # print(turn)
         # print("b")
         check_board(turn)
-        # print("c")
+        print("c:", correct_place_list)
         # 手番2(後手:コンピューター)が置けるマスがない、correct_place_listが空
         if len(correct_place_list) == 0:
             play_sound_effect("pass.mp3")
             root.update()
-            # messagebox.showinfo('information', '置けるマスがないのでパス１')
+            messagebox.showinfo('information', '後手は置けるマスがないのでパス１')
             # OKをクリックしてボックスを閉じる
             # 手番2(後手:コンピューター)のパス1を記録
             pass_record = ["pass1"]
@@ -950,7 +950,7 @@ def button_clicked(row, column):
                 # pass_count += 1
                 play_sound_effect("pass.mp3")
                 root.update()
-                messagebox.showinfo('information', '先手も後手も置けるマスがないので勝敗判定をします')
+                messagebox.showinfo('information', '先手も置けるマスがないので勝敗を判定します')
                 # OKをクリックしてボックスを閉じる
                 # 棋譜にPass2を記録
                 pass_record = ["pass2"]
@@ -964,14 +964,17 @@ def button_clicked(row, column):
         # 手番2(後手:コンピューター)が置けるマスがある、correct_place_listに候補がある
         else:
             show_turn_gui()
+            print("computer arrived")
+            # time.sleep(3)
             computer(turn)
 #
-def computer():
+def computer(turn):
     while True:
         random_list = random.choice(correct_place_list)
         print("Random list", random_list)
-        row = random_list[1]
-        column = random_list[2]
+        row = random_list[0]
+        column = random_list[1]
+        play_sound_effect("place.mp3")
         set_board(row, column,turn)
         # コンピューターの棋譜も記録
         computer_stone_position = [row, column, turn]
@@ -988,16 +991,26 @@ def computer():
         # マスに空きがある
         else:
             change_turn() #先手へ 
+            print("先手になっているか？", turn)
             check_board(turn)
             # 手番1(先手)が置くことができるマスがない
             if len(correct_place_list) == 0: 
-                root.updagte()
-                messagebox.show('information', "先手が置けるマスがないのでパス１")
+                root.update()
+                messagebox.showinfo('information', "先手が置けるマスがないのでパス１")
                 # 棋譜にパス１を記録
                 pass_record = ["pass1"]
                 log.append(pass_record)
                 change_turn() # 再び後手へ
                 check_board(turn)
+                # 手番2(後手)も置くことができるマスがない
+                if len(correct_place_list) == 0: 
+                    root.update()
+                    messagebox.showinfo('information', "後手も置けるマスがないのでパス2で勝敗を判定します")
+                    is_win()
+                # 手番2(後手)が置くことができるマスがある
+                else:
+                    show_turn_gui()
+                    # time.sleep(3)          
             # 手番1(先手)が置くことができるマスがある
             else:
                 show_turn_gui # "先手の番です"
