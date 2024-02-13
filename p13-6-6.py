@@ -938,24 +938,27 @@ def button_clicked(row, column):
         if len(correct_place_list) == 0:
             play_sound_effect("pass.mp3")
             root.update()
-            messagebox.showinfo('information', '置けるマスがないのでパス１')
+            # messagebox.showinfo('information', '置けるマスがないのでパス１')
             # OKをクリックしてボックスを閉じる
+            # 手番2(後手:コンピューター)のパス1を記録
             pass_record = ["pass1"]
             log.append(pass_record)
-            change_turn()
+            change_turn() # 先手へ
             check_board(turn)
-            # 再び置けるマスがない、correct_place_listが空
+            # 先手も置けるマスがない、correct_place_listが空
             if len(correct_place_list) == 0:
                 # pass_count += 1
                 play_sound_effect("pass.mp3")
                 root.update()
-                messagebox.showinfo('information', '置けるますがないのでパス２')
+                messagebox.showinfo('information', '先手も後手も置けるマスがないので勝敗判定をします')
                 # OKをクリックしてボックスを閉じる
+                # 棋譜にPass2を記録
                 pass_record = ["pass2"]
                 log.append(pass_record)
+                # 勝敗判定
                 is_win()
                 print("log",log)
-            # 置けるマスがある、correct_place_listに候補がある
+            # 先手が置けるマスがある、correct_place_listに候補がある
             else:
                 show_turn_gui()                   
         # 手番2(後手:コンピューター)が置けるマスがある、correct_place_listに候補がある
