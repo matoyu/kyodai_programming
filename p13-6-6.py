@@ -915,6 +915,7 @@ def button_clicked(row, column):
         play_sound_effect("error.mp3")
         return
     set_board(row, column, turn)
+    print("ここから先手なのか？", turn)
     # 棋譜の記録
     stone_position = [row, column, turn]
     log.append(stone_position)
@@ -930,6 +931,7 @@ def button_clicked(row, column):
     # ここからコンピューター
     # print(turn)
         change_turn() # 手番が後手コンピューターへ
+        print("ここからコンピューターか？", turn)
         # print(turn)
         # print("b")
         check_board(turn)
@@ -964,11 +966,12 @@ def button_clicked(row, column):
         # 手番2(後手:コンピューター)が置けるマスがある、correct_place_listに候補がある
         else:
             show_turn_gui()
-            print("computer arrived")
-            # time.sleep(3)
-            computer(turn)
+            print("computer arrived", turn)
+            time.sleep(3)
+            show_turn_gui()
+            computer()
 #
-def computer(turn):
+def computer():
     while True:
         random_list = random.choice(correct_place_list)
         print("Random list", random_list)
@@ -990,6 +993,7 @@ def computer(turn):
             break
         # マスに空きがある
         else:
+            print("後手になっているか", turn)
             change_turn() #先手へ 
             print("先手になっているか？", turn)
             check_board(turn)
