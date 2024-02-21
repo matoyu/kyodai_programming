@@ -222,7 +222,7 @@ def check_board_vertical_upward(t):
                     continue
                 elif board[i-1][j] == get_opponent_turn(t):
                     for k in range(i-2,-1, -1):
-                        if board [k][j] == OPEN:
+                        if board[k][j] == OPEN:
                             break
                         elif board[k][j] == t:
                             place = [i,j]

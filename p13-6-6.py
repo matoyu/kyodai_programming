@@ -967,9 +967,11 @@ def button_clicked(row, column):
         else:
             show_turn_gui()
             print("computer arrived", turn)
-            time.sleep(3)
-            show_turn_gui()
+            # root.after(3000, computer)
             computer()
+#
+def call_change_turn():
+    change_turn()
 #
 def computer():
     while True:
@@ -977,7 +979,7 @@ def computer():
         print("Random list", random_list)
         row = random_list[0]
         column = random_list[1]
-        play_sound_effect("place.mp3")
+        # play_sound_effect("place.mp3")
         set_board(row, column,turn)
         # コンピューターの棋譜も記録
         computer_stone_position = [row, column, turn]
@@ -985,7 +987,11 @@ def computer():
         print("log", log)
         # 手番2(後手:コンピューター)が置いたマスのrow, columnから縦、横、斜めを再検査し、相手の石を挟むことができればマスに手番turnを登録する
         check_changeable_place(row, column, turn)
-        show_board_gui()
+        # root.update()
+        # play_sound_effect("place.mp3")
+        root.update()
+        root.after(random.randint(2000,5000), show_board_gui())
+        play_sound_effect("place.mp3")
         # マスが一杯
         if is_full():
             is_win()
@@ -1013,10 +1019,10 @@ def computer():
                     is_win()
                 # 手番2(後手)が置くことができるマスがある
                 else:
-                    show_turn_gui()
-                    # time.sleep(3)          
+                    show_turn_gui()         
             # 手番1(先手)が置くことができるマスがある
             else:
+                print("先手に戻っているか", turn)
                 show_turn_gui # "先手の番です"
                 break
            
