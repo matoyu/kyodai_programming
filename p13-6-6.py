@@ -58,6 +58,7 @@ def change_turn():
     '手番を交代する'
     global turn
     global opponent_turn
+    print("change_turn:", turn, FIRST, SECOND)
     if turn == FIRST:
         turn = SECOND
         opponent_turn = FIRST
@@ -733,8 +734,6 @@ def check_changeable_place_diagonal_downward(row, column, t):
                                 print("pls:", changeable_place_list)     
 #
 # 手番turnが登録されたrow, columnから右斜め上方向にひっくり返せるマスを検査し、相手方のマスに手番turnを登録
-
-# 手番turnが登録されたrow, columnから右斜め上方向にひっくり返せるマスを検査し、相手方のマスに手番turnを登録
 def check_changeable_place_inverse_diagonal_upward(row, column, t):
     changeable_place_list = []
     # 右斜め上方向に残りマスが少なくてダメ
@@ -780,8 +779,6 @@ def check_changeable_place_inverse_diagonal_upward(row, column, t):
                         changeable_place = [k, l]
                         changeable_place_list.append(changeable_place) 
                         print("pls:", changeable_place_list)
-#
-# 手番turnが登録されたrow, columnから左斜め下方向にひっくり返せるマスを検査し、相手方のマスに手番turnを登録
 #
 # 手番turnが登録されたrow, columnから左斜め下方向にひっくり返せるマスを検査し、相手方のマスに手番turnを登録
 def check_changeable_place_inverse_diagonal_downward(row, column, t):
@@ -858,25 +855,54 @@ def is_win():
         label_text.set(combined_result)
         play_sound_effect("even.mp3")
 #
-#START_RESETボタンが押された時の処理
-def start_reset(start_reset_button_text, label_text):
-    if start_reset_button_text.get() == "START":
-        start_reset_button_text.set("RESET")
-        start_board()
-        show_board_gui()
-        play_sound_effect("place.mp3")
-        init_log()
-        turn = FIRST
-        show_turn_gui()
-        check_board(turn)
-        # print("start_reset_list:", correct_place_list)
-    elif start_reset_button_text.get() == "RESET": 
-        start_reset_button_text.set("START")
-        label_text.set("オセロゲーム")
-        init_turn()
-        init_board()
-        init_log()
-        show_board_gui()
+#先手ボタンが押された時の処理
+def start():
+    start_board()
+    show_board_gui()
+    play_sound_effect("place.mp3")
+    init_log()
+    turn = FIRST
+    show_turn_gui()
+    check_board(turn)
+     # print("start_reset_list:", correct_place_list)
+#
+# 後手ボタンが押された時の処理
+def computer_start():
+    global turn
+    start_board()
+    show_board_gui()
+    play_sound_effect("place.mp3")
+    init_log()
+    turn = FIRST
+    show_turn_gui()
+    check_board(turn)
+    random_list = random.choice(correct_place_list)
+    print("Random list", random_list)
+    row = random_list[0]
+    column = random_list[1]
+    # play_sound_effect("place.mp3")
+    set_board(row, column,turn)
+    # コンピューターの棋譜も記録
+    computer_stone_position = [row, column, turn]
+    log.append(computer_stone_position)
+    print("log", log)
+    # 手番1(先手:コンピューター)が置いたマスのrow, columnから縦、横、斜めを再検査し、相手の石を挟むことができればマスに手番turnを登録する
+    check_changeable_place(row, column, turn)
+    root.update()
+    root.after(random.randint(2000,5000), show_board_gui())
+    play_sound_effect("place.mp3")
+    print("先手になっているか？", turn)
+    change_turn() #後手へ 
+    print("後手になっているか？", turn)
+    check_board(turn)
+    show_turn_gui
+#
+def reset():
+    label_text.set("先手か後手を選んでください")
+    init_turn()
+    init_board()
+    init_log()
+    show_board_gui()
     # replay_log(log)
 #
 # 盤面を検査して、置けるマスのリストを作成、ラベルに番手を表示またはパス、パス回数と番手を表示
@@ -1053,10 +1079,6 @@ def replay_log(log):
             continue
             # print("RESULT IN LOG: ", m[0], m[1])
 
-
-def init_label():
-    label_text.set("オセロゲーム")
-
 def resize_image(image, width, height):
     return image.resize((width, height), Image.Resampling.LANCZOS)
 
@@ -1114,26 +1136,34 @@ def create_buttons(f, num_buttons_per_row, num_rows):
 
 create_buttons(f, num_buttons_per_row, num_rows)
 #
-# 先手ボタン、後手ボタンのs区政
-sente_button = tk.Button(f,text = "先手", height = 1, width = 2, font = ('Helvetica, 20'))
-gote_button = tk.Button(f, text = "後手", height = 1, width = 2, font = ('Helvetica, 20'))
+def change_sente_color():
+    sente_button.configure(bg="#ffffff")
+#
+# 先手ボタン、後手ボタンの作成
+sente_button = tk.Button(f,text = "先手", command = start, height = 1, width = 2, font = ('Helvetica, 20'))
+# sente_button.bind("<Button-1>", change_sente_color)
+
+gote_button = tk.Button(f, text = "後手", command = computer_start, height = 1, width = 2, font = ('Helvetica, 20'))
 #
 sente_button.grid(row=1, column=2)
 gote_button.grid(row=1, column=5)
 #
 # ラベル上のテキストを変換するStringVarのインスタンス
 label_text = tk.StringVar(f)
-label_text.set("オセロゲーム")
-
+label_text.set("先手か後手を選んでください")
+#
+def init_label():
+    label_text.set("先手か後手を選んでください")
+#
 # 勝敗を表示するウィジェット
 l = tk.Label(f, textvariable=label_text, height = 2, font = ('Helvetica, 28'))
 l.grid(row=0, column=0, columnspan=8)
 
 # start_reset_button上のStringVar変数の作成
-start_reset_button_text = tk.StringVar(f)
-start_reset_button_text.set("START")
-# START_RESETボタンの作成とウィジェットの割付
-br = tk.Button(f, textvariable=start_reset_button_text, command = lambda:start_reset(start_reset_button_text, label_text), height = 2, width = 3, font = ('Helvetica, 15'))
+# start_reset_button_text = tk.StringVar(f)
+# start_reset_button_text.set("reset")
+# RESETボタンの作成とウィジェットの割付
+br = tk.Button(f, text="RESET", command = reset, height = 1, width = 3, font = ('Helvetica, 20'))
 br.grid(row=10, column=0, columnspan=8)
 #
 root.mainloop()
