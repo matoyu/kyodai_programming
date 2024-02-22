@@ -528,7 +528,7 @@ def check_changeable_place_vertical_upward(row, column, t):
             changeable_place_list.append(changeable_place)
             print("plf:", changeable_place_list)
             for k in range(row-2,-1, -1):
-                if board[k][column] == open:
+                if board[k][column] == OPEN:
                     break
                 # 手番turnが出たら、ひっくり返せるリストのマスに手番turnを登録
                 elif board[k][column] == t:
@@ -1108,11 +1108,18 @@ def create_buttons(f, num_buttons_per_row, num_rows):
         for j in range(num_buttons_per_row):
             # button_number = 1 * num_buttons_per_row + j + 1
             button = tk.Button(f, image = tk_space_image, command=lambda i=i, j=j: button_clicked(i,j), highlightbackground = '#000000')
-            button.grid(row=i+1, column=j)
+            button.grid(row=i+2, column=j)
             button_row.append(button)
         buttons.append(button_row)
 
 create_buttons(f, num_buttons_per_row, num_rows)
+#
+# 先手ボタン、後手ボタンのs区政
+sente_button = tk.Button(f,text = "先手", height = 1, width = 2, font = ('Helvetica, 20'))
+gote_button = tk.Button(f, text = "後手", height = 1, width = 2, font = ('Helvetica, 20'))
+#
+sente_button.grid(row=1, column=2)
+gote_button.grid(row=1, column=5)
 #
 # ラベル上のテキストを変換するStringVarのインスタンス
 label_text = tk.StringVar(f)
@@ -1127,6 +1134,6 @@ start_reset_button_text = tk.StringVar(f)
 start_reset_button_text.set("START")
 # START_RESETボタンの作成とウィジェットの割付
 br = tk.Button(f, textvariable=start_reset_button_text, command = lambda:start_reset(start_reset_button_text, label_text), height = 2, width = 3, font = ('Helvetica, 15'))
-br.grid(row=9, column=0, columnspan=8)
+br.grid(row=10, column=0, columnspan=8)
 #
 root.mainloop()

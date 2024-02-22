@@ -526,7 +526,7 @@ def check_changeable_place_vertical_upward(row, column, t):
             changeable_place_list.append(changeable_place)
             print("plf:", changeable_place_list)
             for k in range(row-2,-1, -1):
-                if board[k][column] == open:
+                if board[k][column] == OPEN:
                     break
                 # 手番turnが出たら、ひっくり返せるリストのマスに手番turnを登録
                 elif board[k][column] == t:
