@@ -731,8 +731,6 @@ def check_changeable_place_diagonal_downward(row, column, t):
                                 print("pls:", changeable_place_list)     
 #
 # 手番turnが登録されたrow, columnから右斜め上方向にひっくり返せるマスを検査し、相手方のマスに手番turnを登録
-
-# 手番turnが登録されたrow, columnから右斜め上方向にひっくり返せるマスを検査し、相手方のマスに手番turnを登録
 def check_changeable_place_inverse_diagonal_upward(row, column, t):
     changeable_place_list = []
     # 右斜め上方向に残りマスが少なくてダメ
@@ -778,8 +776,6 @@ def check_changeable_place_inverse_diagonal_upward(row, column, t):
                         changeable_place = [k, l]
                         changeable_place_list.append(changeable_place) 
                         print("pls:", changeable_place_list)
-#
-# 手番turnが登録されたrow, columnから左斜め下方向にひっくり返せるマスを検査し、相手方のマスに手番turnを登録
 #
 # 手番turnが登録されたrow, columnから左斜め下方向にひっくり返せるマスを検査し、相手方のマスに手番turnを登録
 def check_changeable_place_inverse_diagonal_downward(row, column, t):

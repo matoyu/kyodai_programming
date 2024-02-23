@@ -1,5 +1,5 @@
 #
-# オセロゲーム(GUI)
+# オセロゲーム(GUI)対コンピューター
 #
 import tkinter as tk
 from tkinter import messagebox
@@ -857,6 +857,8 @@ def is_win():
 #
 #先手ボタンが押された時の処理
 def start():
+    print("人が先手")
+    change_sente_color()
     start_board()
     show_board_gui()
     play_sound_effect("place.mp3")
@@ -868,6 +870,7 @@ def start():
 #
 # 後手ボタンが押された時の処理
 def computer_start():
+    print("人が後手")
     global turn
     start_board()
     show_board_gui()
@@ -891,9 +894,9 @@ def computer_start():
     root.update()
     root.after(random.randint(2000,5000), show_board_gui())
     play_sound_effect("place.mp3")
-    print("先手になっているか？", turn)
+    print("手番１のコンピューターになっているか？", turn)
     change_turn() #後手へ 
-    print("後手になっているか？", turn)
+    print("手番２の人になっているか？", turn)
     check_board(turn)
     show_turn_gui
 #
@@ -941,12 +944,12 @@ def button_clicked(row, column):
         play_sound_effect("error.mp3")
         return
     set_board(row, column, turn)
-    print("ここから先手なのか？", turn)
+    print("ここから人か？", turn)
     # 棋譜の記録
     stone_position = [row, column, turn]
     log.append(stone_position)
     print("log", log)
-    # 手番1(先手)が置いたマスのrow, columnから縦、横、斜めを再検査し、相手の石を挟むことができればマスに手番turnを登録する
+    # 人が置いたマスのrow, columnから縦、横、斜めを再検査し、コンピューターの石を挟むことができればマスに手番turnを登録する
     check_changeable_place(row, column, turn)
     show_board_gui()
     # print("a")
@@ -956,29 +959,29 @@ def button_clicked(row, column):
     else:
     # ここからコンピューター
     # print(turn)
-        change_turn() # 手番が後手コンピューターへ
+        change_turn() # 手番がコンピューターへ
         print("ここからコンピューターか？", turn)
         # print(turn)
         # print("b")
         check_board(turn)
-        print("c:", correct_place_list)
-        # 手番2(後手:コンピューター)が置けるマスがない、correct_place_listが空
+        print("computer:", correct_place_list)
+        # コンピューターが置けるマスがない、correct_place_listが空
         if len(correct_place_list) == 0:
             play_sound_effect("pass.mp3")
             root.update()
-            messagebox.showinfo('information', '後手は置けるマスがないのでパス１')
+            messagebox.showinfo('information', '置けるマスがないのでパス１')
             # OKをクリックしてボックスを閉じる
-            # 手番2(後手:コンピューター)のパス1を記録
+            # コンピューターのパス1を記録
             pass_record = ["pass1"]
             log.append(pass_record)
-            change_turn() # 先手へ
+            change_turn() # 人へ
             check_board(turn)
-            # 先手も置けるマスがない、correct_place_listが空
+            # 人も置けるマスがない、correct_place_listが空
             if len(correct_place_list) == 0:
                 # pass_count += 1
                 play_sound_effect("pass.mp3")
                 root.update()
-                messagebox.showinfo('information', '先手も置けるマスがないので勝敗を判定します')
+                messagebox.showinfo('information', '置けるマスがないので勝敗を判定します')
                 # OKをクリックしてボックスを閉じる
                 # 棋譜にPass2を記録
                 pass_record = ["pass2"]
@@ -986,18 +989,17 @@ def button_clicked(row, column):
                 # 勝敗判定
                 is_win()
                 print("log",log)
-            # 先手が置けるマスがある、correct_place_listに候補がある
+            # 人が置けるマスがある、correct_place_listに候補がある
             else:
                 show_turn_gui()                   
-        # 手番2(後手:コンピューター)が置けるマスがある、correct_place_listに候補がある
+        # コンピューターが置けるマスがある、correct_place_listに候補がある
         else:
             show_turn_gui()
             print("computer arrived", turn)
-            # root.after(3000, computer)
             computer()
 #
-def call_change_turn():
-    change_turn()
+# def call_change_turn():
+    # change_turn()
 #
 def computer():
     while True:
@@ -1005,16 +1007,13 @@ def computer():
         print("Random list", random_list)
         row = random_list[0]
         column = random_list[1]
-        # play_sound_effect("place.mp3")
         set_board(row, column,turn)
         # コンピューターの棋譜も記録
         computer_stone_position = [row, column, turn]
         log.append(computer_stone_position)
         print("log", log)
-        # 手番2(後手:コンピューター)が置いたマスのrow, columnから縦、横、斜めを再検査し、相手の石を挟むことができればマスに手番turnを登録する
+        # コンピューターが置いたマスのrow, columnから縦、横、斜めを再検査し、相手の石を挟むことができればマスに手番turnを登録する
         check_changeable_place(row, column, turn)
-        # root.update()
-        # play_sound_effect("place.mp3")
         root.update()
         root.after(random.randint(2000,5000), show_board_gui())
         play_sound_effect("place.mp3")
@@ -1025,31 +1024,31 @@ def computer():
             break
         # マスに空きがある
         else:
-            print("後手になっているか", turn)
-            change_turn() #先手へ 
-            print("先手になっているか？", turn)
+            print("コンピューターになっているか", turn)
+            change_turn() #人へ 
+            print("人になっているか？", turn)
             check_board(turn)
-            # 手番1(先手)が置くことができるマスがない
+            # 人が置くことができるマスがない
             if len(correct_place_list) == 0: 
                 root.update()
-                messagebox.showinfo('information', "先手が置けるマスがないのでパス１")
+                messagebox.showinfo('information', "置けるマスがないのでパス１")
                 # 棋譜にパス１を記録
                 pass_record = ["pass1"]
                 log.append(pass_record)
-                change_turn() # 再び後手へ
+                change_turn() # 再びコンピューターへ
                 check_board(turn)
-                # 手番2(後手)も置くことができるマスがない
+                # コンピューターも置くことができるマスがない
                 if len(correct_place_list) == 0: 
                     root.update()
-                    messagebox.showinfo('information', "後手も置けるマスがないのでパス2で勝敗を判定します")
+                    messagebox.showinfo('information', "置けるマスがないのでパス2で勝敗を判定します")
                     is_win()
-                # 手番2(後手)が置くことができるマスがある
+                # コンピューターが置くことができるマスがある
                 else:
                     show_turn_gui()         
-            # 手番1(先手)が置くことができるマスがある
+            # 人が置くことができるマスがある
             else:
-                print("先手に戻っているか", turn)
-                show_turn_gui # "先手の番です"
+                print("人に戻っているか", turn)
+                show_turn_gui # 人の番
                 break
            
 #
@@ -1137,11 +1136,13 @@ def create_buttons(f, num_buttons_per_row, num_rows):
 create_buttons(f, num_buttons_per_row, num_rows)
 #
 def change_sente_color():
-    sente_button.configure(bg="#ffffff")
+    sente_button.config(bg="#ff0000")
 #
 # 先手ボタン、後手ボタンの作成
-sente_button = tk.Button(f,text = "先手", command = start, height = 1, width = 2, font = ('Helvetica, 20'))
+sente_button = tk.Button(f,text = "先手", command = start, height = 1, width = 2, font = ('Helvetica, 20'), bg = '#ff0000')
 # sente_button.bind("<Button-1>", change_sente_color)
+# root.update()
+# sente_button.config(command=change_sente_color)
 
 gote_button = tk.Button(f, text = "後手", command = computer_start, height = 1, width = 2, font = ('Helvetica, 20'))
 #

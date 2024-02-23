@@ -1,5 +1,5 @@
 # 
-# 三目並べ
+# 三目並べ(GUI)対コンピューター
 #
 import tkinter as tk
 import random

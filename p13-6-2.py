@@ -1,5 +1,5 @@
 # 
-# 三目並べ
+# 三目並べ(GUI)
 #
 import tkinter as tk
 #
