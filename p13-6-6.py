@@ -1164,7 +1164,7 @@ l.grid(row=0, column=0, columnspan=8)
 # start_reset_button_text = tk.StringVar(f)
 # start_reset_button_text.set("reset")
 # RESETボタンの作成とウィジェットの割付
-br = tk.Button(f, text="RESET", command = reset, height = 1, width = 3, font = ('Helvetica, 20'))
+br = tk.Button(f, text="RESET", bg="#ff0000", command = reset, height = 1, width = 3, font = ('Helvetica, 20'))
 br.grid(row=10, column=0, columnspan=8)
 #
 root.mainloop()
