@@ -1,5 +1,5 @@
 #
-# オセロゲーム(GUI)対コンピューター
+# オセロゲーム(GUI)対コンピューター強弱あり
 #
 import tkinter as tk
 from tkinter import messagebox
@@ -858,7 +858,7 @@ def is_win():
 #先手ボタンが押された時の処理
 def start():
     print("人が先手")
-    change_sente_text()
+    change_sente_color()
     start_board()
     show_board_gui()
     play_sound_effect("place.mp3")
@@ -872,7 +872,6 @@ def start():
 def computer_start():
     print("人が後手")
     global turn
-    change_gote_text()
     start_board()
     show_board_gui()
     play_sound_effect("place.mp3")
@@ -903,7 +902,6 @@ def computer_start():
 #
 def reset():
     label_text.set("先手か後手を選んでください")
-    init_sente_gote_button()
     init_turn()
     init_board()
     init_log()
@@ -1137,27 +1135,19 @@ def create_buttons(f, num_buttons_per_row, num_rows):
 
 create_buttons(f, num_buttons_per_row, num_rows)
 #
-def change_sente_text():
-    sente_button.config(text ="先手選択中")
-#
-def change_gote_text():
-    gote_button.config(text = "後手選択中")
+def change_sente_color():
+    sente_button.config(bg="#ff0000")
 #
 # 先手ボタン、後手ボタンの作成
-sente_button = tk.Button(f,text = "先手", command = start, height = 1, width = 5, font = ('Helvetica, 20'), bg = '#ff0000')
+sente_button = tk.Button(f,text = "先手", command = start, height = 1, width = 2, font = ('Helvetica, 20'), bg = '#ff0000')
 # sente_button.bind("<Button-1>", change_sente_color)
 # root.update()
 # sente_button.config(command=change_sente_color)
 
-gote_button = tk.Button(f, text = "後手", command = computer_start, height = 1, width = 5, font = ('Helvetica, 20'))
+gote_button = tk.Button(f, text = "後手", command = computer_start, height = 1, width = 2, font = ('Helvetica, 20'))
 #
-sente_button.grid(row=1, column=0, columnspan=4)
-gote_button.grid(row=1, column=4, columnspan=4)
-#
-# 先手・後手ボタンの初期化
-def init_sente_gote_button():
-    sente_button.config(text = "先手")
-    gote_button.config(text = "後手")
+sente_button.grid(row=1, column=2)
+gote_button.grid(row=1, column=5)
 #
 # ラベル上のテキストを変換するStringVarのインスタンス
 label_text = tk.StringVar(f)
@@ -1169,12 +1159,21 @@ def init_label():
 # 勝敗を表示するウィジェット
 l = tk.Label(f, textvariable=label_text, height = 2, font = ('Helvetica, 28'))
 l.grid(row=0, column=0, columnspan=8)
-
-# start_reset_button上のStringVar変数の作成
-# start_reset_button_text = tk.StringVar(f)
-# start_reset_button_text.set("reset")
+#
 # RESETボタンの作成とウィジェットの割付
 br = tk.Button(f, text="RESET", command = reset, height = 1, width = 3, font = ('Helvetica, 20'))
 br.grid(row=10, column=0, columnspan=8)
+#
+# 対戦コンピューターの対戦レベル表示
+computer_level = tk.Label(f, text = "対戦\nレベル", font = ('Helvetica, 25'))
+computer_level.grid(row=4, column=8)
+#
+# コンピューターレベル強のボタン作成
+level_strong = tk.Button(f, text = "強め", font = ('Helvetica, 20'))
+level_strong.grid(row=5, column=8)
+#
+# コンピューターレベル弱のボタン作成
+level_weak = tk.Button(f, text = "弱め", font = ('Helvetica, 20'))
+level_weak.grid(row=6, column=8)
 #
 root.mainloop()
