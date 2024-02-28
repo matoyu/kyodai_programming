@@ -858,7 +858,7 @@ def is_win():
 #先手ボタンが押された時の処理
 def start():
     print("人が先手")
-    change_sente_color()
+    change_sente_text()
     start_board()
     show_board_gui()
     play_sound_effect("place.mp3")
@@ -871,6 +871,7 @@ def start():
 # 後手ボタンが押された時の処理
 def computer_start():
     print("人が後手")
+    change_gote_text()
     global turn
     start_board()
     show_board_gui()
@@ -879,26 +880,30 @@ def computer_start():
     turn = FIRST
     show_turn_gui()
     check_board(turn)
-    random_list = random.choice(correct_place_list)
-    print("Random list", random_list)
-    row = random_list[0]
-    column = random_list[1]
-    # play_sound_effect("place.mp3")
-    set_board(row, column,turn)
-    # コンピューターの棋譜も記録
-    computer_stone_position = [row, column, turn]
-    log.append(computer_stone_position)
-    print("log", log)
-    # 手番1(先手:コンピューター)が置いたマスのrow, columnから縦、横、斜めを再検査し、相手の石を挟むことができればマスに手番turnを登録する
-    check_changeable_place(row, column, turn)
-    root.update()
-    root.after(random.randint(2000,5000), show_board_gui())
-    play_sound_effect("place.mp3")
-    print("手番１のコンピューターになっているか？", turn)
-    change_turn() #後手へ 
-    print("手番２の人になっているか？", turn)
-    check_board(turn)
-    show_turn_gui
+    # 対戦レベル弱めが選ばれた時のコンピューターのプレイ
+    if computer_level == 0:
+        random_list = random.choice(correct_place_list)
+        print("Random list", random_list)
+        row = random_list[0]
+        column = random_list[1]
+        # play_sound_effect("place.mp3")
+        set_board(row, column,turn)
+        # コンピューターの棋譜も記録
+        computer_stone_position = [row, column, turn]
+        log.append(computer_stone_position)
+        print("log", log)
+        # 手番1(先手:コンピューター)が置いたマスのrow, columnから縦、横、斜めを再検査し、相手の石を挟むことができればマスに手番turnを登録する
+        check_changeable_place(row, column, turn)
+        root.update()
+        root.after(random.randint(2000,5000), show_board_gui())
+        play_sound_effect("place.mp3")
+        print("手番１のコンピューターになっているか？", turn)
+        change_turn() #後手へ 
+        print("手番２の人になっているか？", turn)
+        check_board(turn)
+        show_turn_gui
+    elif computer_level == 1:
+
 #
 def reset():
     label_text.set("対戦レベルを選んでください")
@@ -996,11 +1001,12 @@ def button_clicked(row, column):
         else:
             show_turn_gui()
             print("computer arrived", turn)
-            computer()
+            if computer_level == 0:
+                computer()
+            elif computer_level == 1:
+                computer_stronger()
 #
-# def call_change_turn():
-    # change_turn()
-#
+# 対戦レベル弱めが選ばれた時のコンピューターのプレイ
 def computer():
     while True:
         random_list = random.choice(correct_place_list)
@@ -1050,7 +1056,12 @@ def computer():
                 print("人に戻っているか", turn)
                 show_turn_gui # 人の番
                 break
-           
+#
+def computer_stronger():
+    for i in correct_place_list:
+        row = i[0]
+        column = i[1]
+        
 #
 def replay_log(log):
     # init_board()
@@ -1102,23 +1113,6 @@ original_space_image = Image.open("オセロスペース.png")
 resized_space_image = resize_image(original_space_image, 70, 70)
 tk_space_image = ImageTk.PhotoImage(resized_space_image)
 #
-# # StringVarのインスタンスを格納する変数button_labelsのリスト
-# # 8行全てのStringVar変数のリスト
-# all_button_texts = []
-# for i in range(8):
-#     # １行８個分のStringVar変数のリスト
-#     button_texts = []
-#     for j in range(8):
-#         button_texts.append(tk.StringVar(f))
-#     all_button_texts.append(button_texts)
-# print(all_button_labels)
-#
-# # button上の表示を全てスペースにする
-# for i in all_button_texts:
-#     for j in i:
-#        j.set(' ')
-#
-
 buttons = []
 
 # ウィジェットの作成
@@ -1135,15 +1129,18 @@ def create_buttons(f, num_buttons_per_row, num_rows):
 
 create_buttons(f, num_buttons_per_row, num_rows)
 #
-def change_sente_color():
-    sente_button.config(bg="#ff0000")
+def change_sente_text():
+    sente_button.config(text ="先手選択中")
+#
+def change_gote_text():
+    gote_button.config(text = "後手選択中")
 #
 # 先手ボタン、後手ボタンの作成
-sente_button = tk.Button(f,text = "先手", command = start, height = 1, width = 2, font = ('Helvetica, 20'), bg = '#ff0000')
-gote_button = tk.Button(f, text = "後手", command = computer_start, height = 1, width = 2, font = ('Helvetica, 20'))
+sente_button = tk.Button(f,text = "先手", command = start, height = 1, width = 5, font = ('Helvetica, 20'), bg = '#ff0000')
+gote_button = tk.Button(f, text = "後手", command = computer_start, height = 1, width = 5, font = ('Helvetica, 20'))
 #
-sente_button.grid(row=1, column=2)
-gote_button.grid(row=1, column=5)
+sente_button.grid(row=1, column=0, columnspan= 4)
+gote_button.grid(row=1, column=4, columnspan=4)
 #
 # ラベル上のテキストを変換するStringVarのインスタンス
 label_text = tk.StringVar(f)
@@ -1160,16 +1157,26 @@ l.grid(row=0, column=0, columnspan=8)
 br = tk.Button(f, text="RESET", command = reset, height = 1, width = 3, font = ('Helvetica, 20'))
 br.grid(row=10, column=0, columnspan=8)
 #
+# 対戦レベルの強めが押された時のラベル表示とレベルの保存　strongerはレベル１
+def stronger_chosen():
+    label_text.set("先手か後手を選んでください")
+    computer_level = 1
+#
+# 対戦レベルの弱めが押された時のラベル表示とレベルの保存　weakerはレベル0
+def weaker_chosen():
+    label_text.set("先手か後手を選んでください")
+    computer_level = 0
+#
 # 対戦コンピューターの対戦レベル表示
 computer_level = tk.Label(f, text = "対戦\nレベル", font = ('Helvetica, 25'))
 computer_level.grid(row=4, column=8)
 #
 # コンピューターレベル強のボタン作成
-level_strong = tk.Button(f, text = "強め", font = ('Helvetica, 20'))
+level_strong = tk.Button(f, text = "強め", command = stronger_chosen, font = ('Helvetica, 20'))
 level_strong.grid(row=5, column=8)
 #
 # コンピューターレベル弱のボタン作成
-level_weak = tk.Button(f, text = "弱め", font = ('Helvetica, 20'))
+level_weak = tk.Button(f, text = "弱め", command=weaker_chosen, font = ('Helvetica, 20'))
 level_weak.grid(row=6, column=8)
 #
 root.mainloop()
