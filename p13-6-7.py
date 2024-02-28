@@ -901,7 +901,7 @@ def computer_start():
     show_turn_gui
 #
 def reset():
-    label_text.set("先手か後手を選んでください")
+    label_text.set("対戦レベルを選んでください")
     init_turn()
     init_board()
     init_log()
@@ -1140,10 +1140,6 @@ def change_sente_color():
 #
 # 先手ボタン、後手ボタンの作成
 sente_button = tk.Button(f,text = "先手", command = start, height = 1, width = 2, font = ('Helvetica, 20'), bg = '#ff0000')
-# sente_button.bind("<Button-1>", change_sente_color)
-# root.update()
-# sente_button.config(command=change_sente_color)
-
 gote_button = tk.Button(f, text = "後手", command = computer_start, height = 1, width = 2, font = ('Helvetica, 20'))
 #
 sente_button.grid(row=1, column=2)
@@ -1151,10 +1147,10 @@ gote_button.grid(row=1, column=5)
 #
 # ラベル上のテキストを変換するStringVarのインスタンス
 label_text = tk.StringVar(f)
-label_text.set("先手か後手を選んでください")
+label_text.set("対戦レベルを選んでください")
 #
 def init_label():
-    label_text.set("先手か後手を選んでください")
+    label_text.set("対戦レベルを選んでください")
 #
 # 勝敗を表示するウィジェット
 l = tk.Label(f, textvariable=label_text, height = 2, font = ('Helvetica, 28'))
