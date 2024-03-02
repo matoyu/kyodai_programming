@@ -166,7 +166,7 @@ def init_list():
     # 手番tが置けるマスのリストを空にする
     correct_place_list.clear()
 #
-# 垂直上方向で手番 t が置けるマスの判定
+# 手番tが置けるマスの判定
 #
 def check_board_vertical_upward(t):
     '垂直上方向に手番 t が置けるマスがあることを判定します'
@@ -510,9 +510,11 @@ def check_board_inverse_diagonal_downward(t):
                             else:
                                 continue
                     set_board_to_0(i, j)
-#                                                    
-# 手番tが登録されたrow, columnから縦上方向にひっくり返せるマスを検査し、相手方のマスに手番turnを登録
+# 
+# 手番tが登録されたrow, columnから8方向にひっくり返せるマスを検査し、相手方のマスに手番turnを登録    
+#                                              
 def check_changeable_place_vertical_upward(row, column, t):
+    '手番tが登録されたrow, columnから縦上方向にひっくり返せるマスを検査し、相手方のマスに手番turnを登録'
     changeable_place_list = []
     #  縦上方向に残りマスが少なくてダメ
     if row == 0 or row == 1:
@@ -545,8 +547,8 @@ def check_changeable_place_vertical_upward(row, column, t):
                         changeable_place_list.append(changeable_place)
                         print("pls:", changeable_place_list)                                                            
 #
-# 手番tが登録されたrow, columnから縦下方向にひっくり返せるマスを検査し、相手方のマスに手番turnを登録
 def check_changeable_place_vertical_downward(row, column, t):
+    '手番tが登録されたrow, columnから縦下方向にひっくり返せるマスを検査し、相手方のマスに手番turnを登録'
     changeable_place_list = []
     # 縦下方向に残りマスが少なくてダメ
     if row == 6 or row == 7:
@@ -570,7 +572,6 @@ def check_changeable_place_vertical_downward(row, column, t):
                     for cell in changeable_place_list:
                         board[cell[0]][cell[1]] = t
                     break
-                    #  ここにbreakが要るのでは？　＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
                 elif board[k][column] == opponent_turn:
                     if k == 7:
                         break
@@ -579,8 +580,8 @@ def check_changeable_place_vertical_downward(row, column, t):
                         changeable_place_list.append(changeable_place)  
                         print("pls:", changeable_place_list)
 #
-# 手番tが登録されたrow, columnから水平左方向にひっくり返せるマスを検査し、相手方のマスに手番turnを登録
 def check_changeable_place_horizontal_left(row, column, t):
+    ' 手番tが登録されたrow, columnから水平左方向にひっくり返せるマスを検査し、相手方のマスに手番turnを登録'
     changeable_place_list = []
     # 水平左方向に残りマスが少なくてダメ
     if column == 0 or column == 1:
@@ -611,8 +612,8 @@ def check_changeable_place_horizontal_left(row, column, t):
                         changeable_place_list.append(changeable_place) 
                         print("pls", changeable_place_list)       
 #
-# 手番tが登録されたrow, columnから水平右方向にひっくり返せるマスを検査し、相手方のマスに手番turnを登録
 def check_changeable_place_horizontal_right(row, column, t):
+    '手番tが登録されたrow, columnから水平右方向にひっくり返せるマスを検査し、相手方のマスに手番turnを登録'
     changeable_place_list = []
     # 水平右方向に残りマスが少なくてダメ
     if column == 6 or column == 7:
@@ -642,9 +643,9 @@ def check_changeable_place_horizontal_right(row, column, t):
                         changeable_place = [row, k]
                         changeable_place_list.append(changeable_place) 
                         print("pls:", changeable_place_list)         
-
-# 手番turnが登録されたrow, columnから左斜め上方向にひっくり返せるマスを検査し、相手方のマスに手番tを登録
+#
 def check_changeable_place_diagonal_upward(row, column, t):
+    '手番turnが登録されたrow, columnから左斜め上方向にひっくり返せるマスを検査し、相手方のマスに手番tを登録'
     changeable_place_list = []
     # 左斜め上方向に残りマスが少なくてダメ
     if row == 0 or row == 1:
@@ -687,6 +688,7 @@ def check_changeable_place_diagonal_upward(row, column, t):
                         print("pls:", changeable_place_list)     
 #                   
 def check_changeable_place_diagonal_downward(row, column, t):
+    '手番tが登録されたrow、columnから右斜め下方向にひっくり返せるマスを検査し、相手方のマスに手番turnを登録'
     changeable_place_list = []
     # 右斜め下方向にマスが少なくてダメ
     if row == 6 or row == 7:
@@ -733,8 +735,8 @@ def check_changeable_place_diagonal_downward(row, column, t):
                                 changeable_place_list.append(changeable_place) 
                                 print("pls:", changeable_place_list)     
 #
-# 手番turnが登録されたrow, columnから右斜め上方向にひっくり返せるマスを検査し、相手方のマスに手番turnを登録
 def check_changeable_place_inverse_diagonal_upward(row, column, t):
+    '手番turnが登録されたrow, columnから右斜め上方向にひっくり返せるマスを検査し、相手方のマスに手番turnを登録'
     changeable_place_list = []
     # 右斜め上方向に残りマスが少なくてダメ
     if row == 0 or row == 1:
@@ -780,8 +782,8 @@ def check_changeable_place_inverse_diagonal_upward(row, column, t):
                         changeable_place_list.append(changeable_place) 
                         print("pls:", changeable_place_list)
 #
-# 手番turnが登録されたrow, columnから左斜め下方向にひっくり返せるマスを検査し、相手方のマスに手番turnを登録
 def check_changeable_place_inverse_diagonal_downward(row, column, t):
+    '手番turnが登録されたrow, columnから左斜め下方向にひっくり返せるマスを検査し、相手方のマスに手番turnを登録'
     changeable_place_list = []
     # 残りマスが少なくてダメ
     if row == 6 or row == 7:
@@ -823,7 +825,360 @@ def check_changeable_place_inverse_diagonal_downward(row, column, t):
                         changeable_place = [k, l]
                         changeable_place_list.append(changeable_place)
                         print("pls:", changeable_place_list)
-
+#  
+# 対戦レベル強めでコンピューターが置ける８方向のマスの数を検査     
+#                                             
+def check_computer_stronger_vertical_upward(row, column, t):
+    '戦レベル強めでコンピューターが置ける縦上方向マスの数を検査'
+    changeable_place_list = []
+    #  縦上方向に残りマスが少なくてダメ
+    if row == 0 or row == 1:
+        pass
+    # 以下 row が2以上の場合
+    # 登録された手番turnの上のマスを順に見て、相手方のマスなら手番turnを代入
+    elif row >= 2:
+        if board[row-1][column] == OPEN:
+            pass
+        elif board[row-1][column] == t:
+            pass
+        elif board[row-1][column] == opponent_turn:
+            changeable_place = [row-1, column]
+            changeable_place_list.append(changeable_place)
+            print("plf:", changeable_place_list)
+            for k in range(row-2,-1, -1):
+                if board[k][column] == OPEN:
+                    break
+                # 手番turnが出たら、ひっくり返せるリストのマスに手番turnを登録
+                elif board[k][column] == t:
+                    print("all vucp", changeable_place_list)
+                    computer_get_vertical_upward = len(changeable_place_list)
+                    print(computer_get_vertical_upward)
+                    # for cell in changeable_place_list:
+                        # board[cell[0]][cell[1]] = t
+                    break
+                elif board[k][column] == opponent_turn:
+                    if k == 0:
+                        break
+                    else:
+                        changeable_place = [k, column]
+                        changeable_place_list.append(changeable_place)
+                        print("pls:", changeable_place_list)   
+#
+def check_computer_stronger_vertical_downward(row, column, t):
+    '対戦レベル強めでコンピューターが置ける縦下方向マスの数を検査'
+    changeable_place_list = []
+    # 縦下方向に残りマスが少なくてダメ
+    if row == 6 or row == 7:
+        pass
+    # 以下 row が５以下の場合
+    # 登録された手番turnの下のマスを順に見て、相手方のマスなら手番turnを代入
+    elif row <= 5:
+        if board[row+1][column] == OPEN:
+            pass
+        elif board[row+1][column] == t:
+            pass
+        elif board[row+1][column] == opponent_turn:
+            changeable_place =[row+1, column]
+            changeable_place_list.append(changeable_place)
+            print("plf:", changeable_place_list)
+            for k in range(row+2, 8):
+                if board[k][column] == OPEN:
+                    break
+                elif board[k][column] == t:
+                    print("all vdcp", changeable_place_list)
+                    computer_get_vertical_downward = len(changeable_place_list)
+                    print(computer_get_vertical_downward)
+                    # for cell in changeable_place_list:
+                        # board[cell[0]][cell[1]] = t
+                    break
+                elif board[k][column] == opponent_turn:
+                    if k == 7:
+                        break
+                    else:
+                        changeable_place = [k, column]
+                        changeable_place_list.append(changeable_place)  
+                        print("pls:", changeable_place_list)
+# 
+def check_computer_stronger_horizontal_left(row, column, t):
+    '対戦レベル強めでコンピューターが置ける横左方向マスの数を検査'
+    changeable_place_list = []
+    # 水平左方向に残りマスが少なくてダメ
+    if column == 0 or column == 1:
+        pass
+    # 以下column が2以上の場合
+    elif column >= 2:
+        if board[row][column-1] == OPEN:
+            pass
+        elif board[row][column-1] == t:
+            pass
+        elif board[row][column-1] == opponent_turn:
+            changeable_place =[row, column-1]
+            changeable_place_list.append(changeable_place)
+            print("plf:", changeable_place_list)
+            for k in range(column-2 ,-1, -1):
+                if board [row][k] == OPEN:
+                    break
+                elif board[row][k] == t:
+                    print("all hlcp", changeable_place_list)
+                    computer_get_horizontal_left = len(changeable_place_list)
+                    print(computer_get_horizontal_left)
+                    # for cell in changeable_place_list:
+                        # board[cell[0]][cell[1]] = t
+                    break
+                elif board[row][k] == opponent_turn:
+                    if k == 0:
+                        break
+                    else:
+                        changeable_place = [row, k]
+                        changeable_place_list.append(changeable_place) 
+                        print("pls", changeable_place_list)       
+#  
+def check_computer_stronger_horizontal_right(row, column, t):
+    '対戦レベル強めでコンピューターが置ける横右方向マスの数を検査'
+    changeable_place_list = []
+    # 水平右方向に残りマスが少なくてダメ
+    if column == 6 or column == 7:
+        pass
+    # 以下columnが５以下の場合
+    elif column <= 5:
+        if board[row][column+1] == OPEN:
+            pass
+        elif board[row][column+1] == t:
+            pass
+        elif board[row][column+1] == opponent_turn:
+            changeable_place =[row, column+1]
+            changeable_place_list.append(changeable_place)
+            print("plf:", changeable_place_list)
+            for k in range(column+2, 8):
+                if board[row][k] == OPEN:
+                    break
+                elif board[row][k] == t:
+                    print("all hrcp", changeable_place_list) 
+                    computer_get_horizontal_right = len(changeable_place_list)
+                    print(computer_get_horizontal_right) 
+                    # for cell in changeable_place_list:
+                        # board[cell[0]][cell[1]] = t
+                    break
+                elif board[row][k] == opponent_turn:
+                    if k == 7:
+                        break
+                    else:
+                        changeable_place = [row, k]
+                        changeable_place_list.append(changeable_place) 
+                        print("pls:", changeable_place_list)         
+#
+def check_computer_stronger_diagonal_upward(row, column, t):
+    '対戦レベル強めでコンピューターが置ける左斜め上方向のマスの数を検査'
+    changeable_place_list = []
+    # 左斜め上方向に残りマスが少なくてダメ
+    if row == 0 or row == 1:
+        pass
+    elif column == 0 or column == 1:
+        pass
+    # 以下rowが２以上、columnが２以上の場合
+    elif row >= 2 and column >= 2:
+        # t 番手の左斜め上のマスの判定
+        if board[row-1][column-1] == OPEN:
+            pass
+        elif board[row-1][column-1] == t:
+            pass
+        elif board[row-1][column-1] == opponent_turn:
+            changeable_place = [row-1, column-1]
+            changeable_place_list.append(changeable_place)
+            print("plf:", changeable_place_list)
+            # 対角線より上のマスについては、検査するrowを０までとする
+            m = row - column
+            if m <= 0:
+                m = 0
+            # マスの左斜め上の列を検査の起点とする
+            l = column-1
+            # 左斜め上に２以上離れたマスの判定
+            for k in range(row-2, m-1, -1):
+                l = l - 1
+                if board[k][l] == OPEN:
+                    break
+                elif board[k][l] == t:
+                    print("all ducp", changeable_place_list) 
+                    computer_get_diagonal_upward = len(changeable_place_list)
+                    print(computer_get_diagonal_upward) 
+                    # for cell in changeable_place_list:
+                        # board[cell[0]][cell[1]] = t
+                    break                       
+                elif board[k][l] == opponent_turn:
+                    if k == 0 or l == 0:
+                        break
+                    else:
+                        changeable_place = [k, l]
+                        changeable_place_list.append(changeable_place)  
+                        print("pls:", changeable_place_list)     
+# 
+def check_computer_stronger_diagonal_downward(row, column, t):
+    '対戦レベル強めでコンピューターが置ける右斜め下方向のマスを検査'
+    changeable_place_list = []
+    # 右斜め下方向にマスが少なくてダメ
+    if row == 6 or row == 7:
+        pass
+    elif column == 6 or column == 7:
+        pass
+    # 以下row, columnが5以下の場合
+    elif row <= 5 and column <= 5:
+            # t 番手の右斜め下のマスの判定
+            if board[row+1][column+1] == OPEN:
+                pass
+            elif board[row+1][column+1] == t:
+                pass
+            elif board[row+1][column+1] == opponent_turn:
+                changeable_place = [row+1, column+1]
+                changeable_place_list.append(changeable_place)
+                print("plf:", changeable_place_list)
+                # turn 番手から右斜め下方向のマスを判定する範囲を決める
+                m = row - column
+                # 対角線以下
+                if m >= 0:
+                    m = 8
+                # 対角線より上
+                elif m < 0:
+                    m = abs(m)
+                    m = 8 - m
+                # 以下のfor文で、マスの縦列の始まりをt番手の１つ次に設定
+                l = column + 1
+                # t 番手から２以上離れたマスがある時の判定
+                for k in range(row+2, m):
+                        l = l+1
+                        if board[k][l] == OPEN:
+                            break
+                        elif board[k][l] == t:
+                            print("all ddcp", changeable_place_list) 
+                            computer_get_diagonal_downward = len(changeable_place_list)
+                            print(computer_get_diagonal_downward) 
+                            # for cell in changeable_place_list:
+                                # board[cell[0]][cell[1]] = t
+                            break
+                        elif board[k][l] == opponent_turn:
+                            if k == 7 or l == 7:
+                                break
+                            else:
+                                changeable_place = [k, l]
+                                changeable_place_list.append(changeable_place) 
+                                print("pls:", changeable_place_list)
+    return computer_get_diagonal_downward
+#
+def check_computer_stronger_inverse_diagonal_upward(row, column, t):
+    '対戦レベル強めでコンピューターが置ける右斜め上方向のマスを検査'
+    changeable_place_list = []
+    # 右斜め上方向に残りマスが少なくてダメ
+    if row == 0 or row == 1:
+        pass
+    elif column == 6 or column == 7:
+        pass
+    # 以下i が2以上, j が5以下の場合
+    elif row  >= 2 and column <= 5:
+        # t 番手の右斜め上のマスの判定
+        if board[row-1][column+1] == OPEN:
+            pass
+        elif board[row-1][column+1] == t:
+            pass
+        elif board[row-1][column+1] == opponent_turn:
+            changeable_place = [row-1, column+1]
+            changeable_place_list.append(changeable_place)
+            print("plf:", changeable_place_list)
+            # t 番手から右斜め上方向に２以上離れたマスを判定する範囲を決める
+            m = row + column
+            # 対角線以上
+            if m <= 7:
+                m = 0
+            # 対角線より下
+            elif m >= 8:
+                m = (row + column) - 7
+            # 以下のfor文で、マスの縦列の始まりをt番手の１つ次に設定
+            l = column + 1
+            # t 番手から２以上離れたマスがある時の判定
+            for k in range(row-2, m-1, -1):
+                l = l + 1
+                if board[k][l] == OPEN:
+                    break
+                elif board[k][l] == t:
+                    print("all iducp", changeable_place_list)    
+                    computer_get_inverse_diagonal_upward = len(changeable_place_list)
+                    print(computer_get_inverse_diagonal_upward) 
+                    # for cell in changeable_place_list:
+                        # board[cell[0]][cell[1]] = t
+                    break        
+                elif board[k][l] == opponent_turn:
+                    if k == 0 or l == 7:
+                        break
+                    else:
+                        changeable_place = [k, l]
+                        changeable_place_list.append(changeable_place) 
+                        print("pls:", changeable_place_list)
+#
+def check_computer_stronger_inverse_diagonal_downward(row, column, t):
+    '対戦レベル強めでコンピューターが置ける左斜め下方向のマスを検査'
+    changeable_place_list = []
+    # 残りマスが少なくてダメ
+    if row == 6 or row == 7:
+        pass
+    elif column == 0 or column == 1:
+        pass
+    # 以下i が5以下, j が2以上の場合
+    elif row <= 5 and column >= 2:
+        # t 番手の左斜め下のマスの判定
+        if board[row+1][column-1] == OPEN:
+            pass
+        elif board[row+1][column-1] == t:
+            pass
+        elif board[row+1][column-1] == opponent_turn:
+            changeable_place = [row+1, column-1]
+            changeable_place_list.append(changeable_place)
+            print("plf:", changeable_place_list)
+            # t 番手から左斜め下方向に２以上離れたマスを判定する範囲を決める
+            m = row + column
+            # 対角線より下
+            if m >= 8:
+                m = 7
+            # 以下のfor文で、マスの縦列の始まりをt番手の１つ前fに設定
+            l = column - 1
+            # t 番手から２以上離れたマスがある時の判定
+            for k in range(row+2, m+1):
+                l = l - 1
+                if board[k][l] == OPEN:
+                    break
+                elif board[k][l] == t:
+                    print("all iddcp", changeable_place_list) 
+                    computer_get_inverse_diagonal_downward = len(changeable_place_list)
+                    print(computer_get_inverse_diagonal_downward) 
+                    # for cell in changeable_place_list:
+                        # board[cell[0]][cell[1]] = t
+                    break         
+                elif board[k][l] == opponent_turn:
+                    if k == 7 or l == 0:
+                        break
+                    else:
+                        changeable_place = [k, l]
+                        changeable_place_list.append(changeable_place)
+                        print("pls:", changeable_place_list)
+#                                                                                                               
+#
+corner_list = []                        
+def corner():
+    init_corner_list()
+    for i in correct_place_list:
+        if i[0] == 0 and i[1] == 0:
+            corner = [0,0]
+            corner_list.append(corner)
+        elif i[0] == 0 and i[1] == 7:
+            corner = [0,7]
+            corner_list.append(corner)
+        elif i[0] == 7 and i[1] == 0:
+            corner = [7,0]
+            corner_list.append(corner)
+        elif i[0] == 7 and i[1] == 7:
+            corner = [7,7]
+            corner_list.append(corner)
+    print(corner_list)
+#
+def init_corner_list():
+    corner_list.clear()
 #
 # 勝ちの判定
 def is_win():
@@ -909,6 +1264,7 @@ def reset():
     label_text.set("対戦レベルを選んでください")
     init_turn()
     init_board()
+    init_corner_list()
     init_log()
     show_board_gui()
     # replay_log(log)
@@ -1058,10 +1414,127 @@ def computer():
                 break
 #
 def computer_stronger():
-    for i in correct_place_list:
-        row = i[0]
-        column = i[1]
-        
+    while True:
+        corner()
+        # 角に置けるマスがある
+        if len(corner_list) != 0:
+            random_corner = random.choice(corner_list)
+            row = random_corner[0]
+            column = random_corner[1]
+            set_board(row, column,turn)
+            # コンピューターの棋譜も記録
+            computer_stone_position = [row, column, turn]
+            log.append(computer_stone_position)
+            print("log", log)
+            # コンピューターが置いたマスのrow, columnから縦、横、斜めを再検査し、相手の石を挟むことができればマスに手番turnを登録する
+            check_changeable_place(row, column, turn)
+            root.update()
+            root.after(random.randint(2000,5000), show_board_gui())
+            play_sound_effect("place.mp3")
+            # マスが一杯
+            if is_full():
+                is_win()
+                print("log", log)
+                break
+            # マスに空きがある
+            else:
+                print("コンピューターになっているか", turn)
+                change_turn() #人へ 
+                print("人になっているか？", turn)
+                check_board(turn)
+                # 人が置くことができるマスがない
+                if len(correct_place_list) == 0: 
+                    root.update()
+                    messagebox.showinfo('information', "置けるマスがないのでパス１")
+                    # 棋譜にパス１を記録
+                    pass_record = ["pass1"]
+                    log.append(pass_record)
+                    change_turn() # 再びコンピューターへ
+                    check_board(turn)
+                    # コンピューターも置くことができるマスがない
+                    if len(correct_place_list) == 0: 
+                        root.update()
+                        messagebox.showinfo('information', "置けるマスがないのでパス2で勝敗を判定します")
+                        is_win()
+                    # コンピューターが置くことができるマスがある
+                    else:
+                        show_turn_gui()         
+                # 人が置くことができるマスがある
+                else:
+                    print("人に戻っているか", turn)
+                    show_turn_gui # 人の番
+                    break
+        # 角に置けるマスがない
+        else:
+            computer_get = 0
+            for i in correct_place_list:
+                row = i[0]
+                column = i[1]
+                # check_computer_stronger(row, column, turn)
+                new_computer_get = check_computer_stronger(row, column, turn)
+                # omputer_get_vertical_upward + computer_get_vertical_downward + computer_get_horizontleft + computer_get_horizontal_right + computer_get_diagonal_upward + computer_get_diagonal_downward + computer_get_inverse_diagonal_upward + computer_get_inverse_diagonal_downward
+                if new_computer_get > computer_get:
+                    computer_get = new_computer_get
+                    best_choice = [row, column, turn]
+                else:
+                    continue
+            set_board(best_choice[0], best_choice[1], best_choice[2])
+            # コンピューターの棋譜も記録
+            log.append(best_choice)
+            print("log", log)
+            # コンピューターが置いたマスのrow, columnから縦、横、斜めを再検査し、相手の石を挟むことができればマスに手番turnを登録する
+            check_changeable_place(best_choice[0], best_choice[1], best_choice[2])
+            root.update()
+            root.after(random.randint(2000,5000), show_board_gui())
+            play_sound_effect("place.mp3")
+            # マスが一杯
+            if is_full():
+                is_win()
+                print("log", log)
+                break
+            # マスに空きがある
+            else:
+                print("コンピューターになっているか", turn)
+                change_turn() #人へ 
+                print("人になっているか？", turn)
+                check_board(turn)
+                # 人が置くことができるマスがない
+                if len(correct_place_list) == 0: 
+                    root.update()
+                    messagebox.showinfo('information', "置けるマスがないのでパス１")
+                    # 棋譜にパス１を記録
+                    pass_record = ["pass1"]
+                    log.append(pass_record)
+                    change_turn() # 再びコンピューターへ
+                    check_board(turn)
+                    # コンピューターも置くことができるマスがない
+                    if len(correct_place_list) == 0: 
+                        root.update()
+                        messagebox.showinfo('information', "置けるマスがないのでパス2で勝敗を判定します")
+                        is_win()
+                    # コンピューターが置くことができるマスがある
+                    else:
+                        show_turn_gui()         
+                # 人が置くことができるマスがある
+                else:
+                    print("人に戻っているか", turn)
+                    show_turn_gui # 人の番
+                    break
+#
+# 置けるマスのリストの各マスについてひっくり返せるマスの数を検査
+def check_computer_stronger(row, column, turn):
+    computer_get_sum = 0
+    check_computer_stronger_vertical_upward(row, column, turn)
+    check_computer_stronger_vertical_downward(row, column, turn)
+    check_computer_stronger_horizontal_left(row, column, turn)
+    check_computer_stronger_horizontal_right(row, column, turn)
+    check_computer_stronger_diagonal_upward(row, column, turn)
+    computer_get_sum += check_computer_stronger_diagonal_downward(row, column, turn)
+    check_computer_stronger_inverse_diagonal_upward(row, column, turn)
+    check_computer_stronger_inverse_diagonal_downward(row, column, turn)
+    return computer_get_sum
+    # computer_get = computer_get_vertical_upward + computer_get_vertical_downward + computer_get_horizontleft + computer_get_horizontal_right + computer_get_diagonal_upward + computer_get_diagonal_downward + computer_get_inverse_diagonal_upward + computer_get_inverse_diagonal_downward
+
 #
 def replay_log(log):
     # init_board()
