@@ -15,6 +15,9 @@ FIRST = 1
 SECOND = 2
 DRAW = 3
 
+# コンピューターのレベルの変数
+computer_level = -1
+
 # 恒常的な変数
 turn = 1 
 if turn == FIRST:
@@ -830,6 +833,7 @@ def check_changeable_place_inverse_diagonal_downward(row, column, t):
 #                                             
 def check_computer_stronger_vertical_upward(row, column, t):
     '戦レベル強めでコンピューターが置ける縦上方向マスの数を検査'
+    computer_get_vertical_upward = 0
     changeable_place_list = []
     #  縦上方向に残りマスが少なくてダメ
     if row == 0 or row == 1:
@@ -863,9 +867,11 @@ def check_computer_stronger_vertical_upward(row, column, t):
                         changeable_place = [k, column]
                         changeable_place_list.append(changeable_place)
                         print("pls:", changeable_place_list)   
+    return computer_get_vertical_upward
 #
 def check_computer_stronger_vertical_downward(row, column, t):
     '対戦レベル強めでコンピューターが置ける縦下方向マスの数を検査'
+    computer_get_vertical_downward = 0
     changeable_place_list = []
     # 縦下方向に残りマスが少なくてダメ
     if row == 6 or row == 7:
@@ -898,9 +904,11 @@ def check_computer_stronger_vertical_downward(row, column, t):
                         changeable_place = [k, column]
                         changeable_place_list.append(changeable_place)  
                         print("pls:", changeable_place_list)
+    return computer_get_vertical_downward 
 # 
 def check_computer_stronger_horizontal_left(row, column, t):
     '対戦レベル強めでコンピューターが置ける横左方向マスの数を検査'
+    computer_get_horizontal_left = 0
     changeable_place_list = []
     # 水平左方向に残りマスが少なくてダメ
     if column == 0 or column == 1:
@@ -931,10 +939,12 @@ def check_computer_stronger_horizontal_left(row, column, t):
                     else:
                         changeable_place = [row, k]
                         changeable_place_list.append(changeable_place) 
-                        print("pls", changeable_place_list)       
+                        print("pls", changeable_place_list)     
+    return computer_get_horizontal_left  
 #  
 def check_computer_stronger_horizontal_right(row, column, t):
     '対戦レベル強めでコンピューターが置ける横右方向マスの数を検査'
+    computer_get_horizontal_right = 0
     changeable_place_list = []
     # 水平右方向に残りマスが少なくてダメ
     if column == 6 or column == 7:
@@ -965,10 +975,12 @@ def check_computer_stronger_horizontal_right(row, column, t):
                     else:
                         changeable_place = [row, k]
                         changeable_place_list.append(changeable_place) 
-                        print("pls:", changeable_place_list)         
+                        print("pls:", changeable_place_list)   
+    return computer_get_horizontal_right      
 #
 def check_computer_stronger_diagonal_upward(row, column, t):
     '対戦レベル強めでコンピューターが置ける左斜め上方向のマスの数を検査'
+    computer_get_diagonal_upward = 0
     changeable_place_list = []
     # 左斜め上方向に残りマスが少なくてダメ
     if row == 0 or row == 1:
@@ -1010,10 +1022,12 @@ def check_computer_stronger_diagonal_upward(row, column, t):
                     else:
                         changeable_place = [k, l]
                         changeable_place_list.append(changeable_place)  
-                        print("pls:", changeable_place_list)     
+                        print("pls:", changeable_place_list)    
+    return computer_get_diagonal_upward
 # 
 def check_computer_stronger_diagonal_downward(row, column, t):
     '対戦レベル強めでコンピューターが置ける右斜め下方向のマスを検査'
+    computer_get_diagonal_downward = 0
     changeable_place_list = []
     # 右斜め下方向にマスが少なくてダメ
     if row == 6 or row == 7:
@@ -1065,6 +1079,7 @@ def check_computer_stronger_diagonal_downward(row, column, t):
 #
 def check_computer_stronger_inverse_diagonal_upward(row, column, t):
     '対戦レベル強めでコンピューターが置ける右斜め上方向のマスを検査'
+    computer_get_inverse_diagonal_upward = 0
     changeable_place_list = []
     # 右斜め上方向に残りマスが少なくてダメ
     if row == 0 or row == 1:
@@ -1111,9 +1126,11 @@ def check_computer_stronger_inverse_diagonal_upward(row, column, t):
                         changeable_place = [k, l]
                         changeable_place_list.append(changeable_place) 
                         print("pls:", changeable_place_list)
+    return computer_get_inverse_diagonal_upward
 #
 def check_computer_stronger_inverse_diagonal_downward(row, column, t):
     '対戦レベル強めでコンピューターが置ける左斜め下方向のマスを検査'
+    computer_get_inverse_diagonal_downward = 0
     changeable_place_list = []
     # 残りマスが少なくてダメ
     if row == 6 or row == 7:
@@ -1157,6 +1174,7 @@ def check_computer_stronger_inverse_diagonal_downward(row, column, t):
                         changeable_place = [k, l]
                         changeable_place_list.append(changeable_place)
                         print("pls:", changeable_place_list)
+    return computer_get_inverse_diagonal_downward
 #                                                                                                               
 #
 corner_list = []                        
@@ -1235,30 +1253,26 @@ def computer_start():
     turn = FIRST
     show_turn_gui()
     check_board(turn)
-    # 対戦レベル弱めが選ばれた時のコンピューターのプレイ
-    if computer_level == 0:
-        random_list = random.choice(correct_place_list)
-        print("Random list", random_list)
-        row = random_list[0]
-        column = random_list[1]
-        # play_sound_effect("place.mp3")
-        set_board(row, column,turn)
-        # コンピューターの棋譜も記録
-        computer_stone_position = [row, column, turn]
-        log.append(computer_stone_position)
-        print("log", log)
-        # 手番1(先手:コンピューター)が置いたマスのrow, columnから縦、横、斜めを再検査し、相手の石を挟むことができればマスに手番turnを登録する
-        check_changeable_place(row, column, turn)
-        root.update()
-        root.after(random.randint(2000,5000), show_board_gui())
-        play_sound_effect("place.mp3")
-        print("手番１のコンピューターになっているか？", turn)
-        change_turn() #後手へ 
-        print("手番２の人になっているか？", turn)
-        check_board(turn)
-        show_turn_gui
-    elif computer_level == 1:
-
+    random_list = random.choice(correct_place_list)
+    print("Random list", random_list)
+    row = random_list[0]
+    column = random_list[1]
+    # play_sound_effect("place.mp3")
+    set_board(row, column,turn)
+    # コンピューターの棋譜も記録
+    computer_stone_position = [row, column, turn]
+    log.append(computer_stone_position)
+    print("log", log)
+    # 手番1(先手:コンピューター)が置いたマスのrow, columnから縦、横、斜めを再検査し、相手の石を挟むことができればマスに手番turnを登録する
+    check_changeable_place(row, column, turn)
+    root.update()
+    root.after(random.randint(2000,5000), show_board_gui())
+    play_sound_effect("place.mp3")
+    print("手番１のコンピューターになっているか？", turn)
+    change_turn() #後手へ 
+    print("手番２の人になっているか？", turn)
+    check_board(turn)
+    show_turn_gui
 #
 def reset():
     label_text.set("対戦レベルを選んでください")
@@ -1466,13 +1480,13 @@ def computer_stronger():
                     break
         # 角に置けるマスがない
         else:
+            print("角ではないコンピューター強")
             computer_get = 0
             for i in correct_place_list:
                 row = i[0]
                 column = i[1]
                 # check_computer_stronger(row, column, turn)
                 new_computer_get = check_computer_stronger(row, column, turn)
-                # omputer_get_vertical_upward + computer_get_vertical_downward + computer_get_horizontleft + computer_get_horizontal_right + computer_get_diagonal_upward + computer_get_diagonal_downward + computer_get_inverse_diagonal_upward + computer_get_inverse_diagonal_downward
                 if new_computer_get > computer_get:
                     computer_get = new_computer_get
                     best_choice = [row, column, turn]
@@ -1524,17 +1538,15 @@ def computer_stronger():
 # 置けるマスのリストの各マスについてひっくり返せるマスの数を検査
 def check_computer_stronger(row, column, turn):
     computer_get_sum = 0
-    check_computer_stronger_vertical_upward(row, column, turn)
-    check_computer_stronger_vertical_downward(row, column, turn)
-    check_computer_stronger_horizontal_left(row, column, turn)
-    check_computer_stronger_horizontal_right(row, column, turn)
-    check_computer_stronger_diagonal_upward(row, column, turn)
+    computer_get_sum += check_computer_stronger_vertical_upward(row, column, turn)
+    computer_get_sum += check_computer_stronger_vertical_downward(row, column, turn)
+    computer_get_sum += check_computer_stronger_horizontal_left(row, column, turn)
+    computer_get_sum += check_computer_stronger_horizontal_right(row, column, turn)
+    computer_get_sum += check_computer_stronger_diagonal_upward(row, column, turn)
     computer_get_sum += check_computer_stronger_diagonal_downward(row, column, turn)
-    check_computer_stronger_inverse_diagonal_upward(row, column, turn)
-    check_computer_stronger_inverse_diagonal_downward(row, column, turn)
+    computer_get_sum += check_computer_stronger_inverse_diagonal_upward(row, column, turn)
+    computer_get_sum += check_computer_stronger_inverse_diagonal_downward(row, column, turn)
     return computer_get_sum
-    # computer_get = computer_get_vertical_upward + computer_get_vertical_downward + computer_get_horizontleft + computer_get_horizontal_right + computer_get_diagonal_upward + computer_get_diagonal_downward + computer_get_inverse_diagonal_upward + computer_get_inverse_diagonal_downward
-
 #
 def replay_log(log):
     # init_board()
@@ -1633,11 +1645,14 @@ br.grid(row=10, column=0, columnspan=8)
 # 対戦レベルの強めが押された時のラベル表示とレベルの保存　strongerはレベル１
 def stronger_chosen():
     label_text.set("先手か後手を選んでください")
+    global computer_level
     computer_level = 1
+    
 #
 # 対戦レベルの弱めが押された時のラベル表示とレベルの保存　weakerはレベル0
 def weaker_chosen():
     label_text.set("先手か後手を選んでください")
+    global computer_level
     computer_level = 0
 #
 # 対戦コンピューターの対戦レベル表示
