@@ -1482,22 +1482,31 @@ def computer_stronger():
         else:
             print("角ではないコンピューター強")
             computer_get = 0
+            best_choice_list = []
             for i in correct_place_list:
                 row = i[0]
                 column = i[1]
                 # check_computer_stronger(row, column, turn)
                 new_computer_get = check_computer_stronger(row, column, turn)
                 if new_computer_get > computer_get:
+                    best_choice_list.clear()
                     computer_get = new_computer_get
                     best_choice = [row, column, turn]
+                    best_choice_list.append(best_choice)
+                elif new_computer_get == computer_get:
+                    best_choice = [row, column, turn]
+                    best_choice_list.append(best_choice)
                 else:
                     continue
-            set_board(best_choice[0], best_choice[1], best_choice[2])
+            print("best choice list", best_choice_list)
+            random_best_choice = random.choice(best_choice_list)
+            print("randam best choice", random_best_choice)
+            set_board(random_best_choice[0], random_best_choice[1], random_best_choice[2])
             # コンピューターの棋譜も記録
-            log.append(best_choice)
+            log.append(random_best_choice)
             print("log", log)
             # コンピューターが置いたマスのrow, columnから縦、横、斜めを再検査し、相手の石を挟むことができればマスに手番turnを登録する
-            check_changeable_place(best_choice[0], best_choice[1], best_choice[2])
+            check_changeable_place(random_best_choice[0], random_best_choice[1], random_best_choice[2])
             root.update()
             root.after(random.randint(2000,5000), show_board_gui())
             play_sound_effect("place.mp3")
