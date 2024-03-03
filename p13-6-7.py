@@ -1625,9 +1625,14 @@ create_buttons(f, num_buttons_per_row, num_rows)
 #
 def change_sente_text():
     sente_button.config(text ="先手選択中")
+    play_sound_effect("levelchoice.mp3")
+    root.update()
+    
 #
 def change_gote_text():
     gote_button.config(text = "後手選択中")
+    play_sound_effect("levelchoice.mp3")
+    root.update()
 #
 # 先手ボタン、後手ボタンの作成
 sente_button = tk.Button(f,text = "先手", command = start, height = 1, width = 5, font = ('Helvetica, 20'), bg = '#ff0000')
@@ -1656,6 +1661,8 @@ def stronger_chosen():
     label_text.set("先手か後手を選んでください")
     global computer_level
     computer_level = 1
+    play_sound_effect("levelchoice.mp3")
+    root.update()
     
 #
 # 対戦レベルの弱めが押された時のラベル表示とレベルの保存　weakerはレベル0
@@ -1663,6 +1670,8 @@ def weaker_chosen():
     label_text.set("先手か後手を選んでください")
     global computer_level
     computer_level = 0
+    play_sound_effect("levelchoice.mp3")
+    root.update()
 #
 # 対戦コンピューターの対戦レベル表示
 computer_level = tk.Label(f, text = "対戦\nレベル", font = ('Helvetica, 25'))
