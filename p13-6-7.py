@@ -53,7 +53,9 @@ def show_turn_gui():
 def init_turn():
     '手番を初期化する'
     global turn
+    global opponent_turn
     turn = 1
+    opponent_turn = 2
 #
 # 手番の交代
 #
@@ -1230,9 +1232,10 @@ def is_win():
 #
 #先手ボタンが押された時の処理
 def start():
+    global turn
     print("人が先手")
     change_sente_color()
-    start_board()
+    root.after(1000, start_board())
     show_board_gui()
     play_sound_effect("place.mp3")
     init_log()
@@ -1245,8 +1248,8 @@ def start():
 def computer_start():
     print("人が後手")
     change_gote_color()
+    root.after(1000, start_board())
     global turn
-    start_board()
     show_board_gui()
     play_sound_effect("place.mp3")
     init_log()
@@ -1275,14 +1278,21 @@ def computer_start():
     show_turn_gui
 #
 def reset():
+    global computer_level
+    play_sound_effect("levelchoice.mp3")
+    root.update()
     label_text.set("対戦レベルを選んでください")
+    computer_level = -1
     init_turn()
     init_board()
     init_corner_list()
     init_log()
     level_strong.configure(highlightbackground = '#ffffff')
-    level_weak.configure(highlightbackground = '#ff0000')
+    level_weak.configure(highlightbackground = '#ffffff')
+    sente_button.config(highlightbackground = '#ffffff')
+    gote_button.config(highlightbackground = '#ffffff')
     show_board_gui()
+    print("reset")
 
     # replay_log(log)
 #
@@ -1643,8 +1653,8 @@ def change_gote_color():
     root.update()
 #
 # 先手ボタン、後手ボタンの作成
-sente_button = tk.Button(f,text = "先手", command = start, height = 1, width = 5, font = ('Helvetica, 20'), bg = '#ff0000')
-gote_button = tk.Button(f, text = "後手", command = computer_start, height = 1, width = 5, font = ('Helvetica, 20'))
+sente_button = tk.Button(f,text = "先手", command = start, height = 1, width = 3, font = ('Helvetica, 20'), bg = '#ff0000')
+gote_button = tk.Button(f, text = "後手", command = computer_start, height = 1, width = 3, font = ('Helvetica, 20'))
 #
 sente_button.grid(row=1, column=0, columnspan= 4)
 gote_button.grid(row=1, column=4, columnspan=4)
