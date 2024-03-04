@@ -1607,6 +1607,11 @@ original_space_image = Image.open("オセロスペース.png")
 resized_space_image = resize_image(original_space_image, 70, 70)
 tk_space_image = ImageTk.PhotoImage(resized_space_image)
 #
+# 対戦レベルボタンのイメージを読み込み、サイズを変更
+original_tsuyome_image = Image.open("強めボタン赤.png")
+resized_tsuyome_image = resize_image(original_tsuyome_image, 62, 35)
+tk_tsuyome_image = ImageTk.PhotoImage(resized_tsuyome_image)
+#
 buttons = []
 
 # ウィジェットの作成
@@ -1663,6 +1668,7 @@ def stronger_chosen():
     computer_level = 1
     play_sound_effect("levelchoice.mp3")
     root.update()
+    level_strong.configure(image = tk_tsuyome_image)
     
 #
 # 対戦レベルの弱めが押された時のラベル表示とレベルの保存　weakerはレベル0
@@ -1678,7 +1684,7 @@ computer_level = tk.Label(f, text = "対戦\nレベル", font = ('Helvetica, 25'
 computer_level.grid(row=4, column=8)
 #
 # コンピューターレベル強のボタン作成
-level_strong = tk.Button(f, text = "強め", command = stronger_chosen, font = ('Helvetica, 20'))
+level_strong = tk.Button(f, text = "強め", command = stronger_chosen, font = ('Helvetica, 20'), highlightbackground = '#ff0000')
 level_strong.grid(row=5, column=8)
 #
 # コンピューターレベル弱のボタン作成
