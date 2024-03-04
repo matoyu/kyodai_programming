@@ -1231,7 +1231,7 @@ def is_win():
 #先手ボタンが押された時の処理
 def start():
     print("人が先手")
-    change_sente_text()
+    change_sente_color()
     start_board()
     show_board_gui()
     play_sound_effect("place.mp3")
@@ -1244,7 +1244,7 @@ def start():
 # 後手ボタンが押された時の処理
 def computer_start():
     print("人が後手")
-    change_gote_text()
+    change_gote_color()
     global turn
     start_board()
     show_board_gui()
@@ -1280,7 +1280,10 @@ def reset():
     init_board()
     init_corner_list()
     init_log()
+    level_strong.configure(highlightbackground = '#ffffff')
+    level_weak.configure(highlightbackground = '#ff0000')
     show_board_gui()
+
     # replay_log(log)
 #
 # 盤面を検査して、置けるマスのリストを作成、ラベルに番手を表示またはパス、パス回数と番手を表示
@@ -1607,10 +1610,10 @@ original_space_image = Image.open("オセロスペース.png")
 resized_space_image = resize_image(original_space_image, 70, 70)
 tk_space_image = ImageTk.PhotoImage(resized_space_image)
 #
-# 対戦レベルボタンのイメージを読み込み、サイズを変更
-original_tsuyome_image = Image.open("強めボタン赤.png")
-resized_tsuyome_image = resize_image(original_tsuyome_image, 62, 35)
-tk_tsuyome_image = ImageTk.PhotoImage(resized_tsuyome_image)
+# # 対戦レベルボタンのイメージを読み込み、サイズを変更
+# original_tsuyome_image = Image.open("強めボタン赤.png")
+# resized_tsuyome_image = resize_image(original_tsuyome_image, 62, 35)
+# tk_tsuyome_image = ImageTk.PhotoImage(resized_tsuyome_image)
 #
 buttons = []
 
@@ -1628,14 +1631,14 @@ def create_buttons(f, num_buttons_per_row, num_rows):
 
 create_buttons(f, num_buttons_per_row, num_rows)
 #
-def change_sente_text():
-    sente_button.config(text ="先手選択中")
+def change_sente_color():
+    sente_button.config(highlightbackground = '#ff0000')
     play_sound_effect("levelchoice.mp3")
     root.update()
     
 #
-def change_gote_text():
-    gote_button.config(text = "後手選択中")
+def change_gote_color():
+    gote_button.config(highlightbackground = '#ff0000')
     play_sound_effect("levelchoice.mp3")
     root.update()
 #
@@ -1668,7 +1671,7 @@ def stronger_chosen():
     computer_level = 1
     play_sound_effect("levelchoice.mp3")
     root.update()
-    level_strong.configure(image = tk_tsuyome_image)
+    level_strong.configure(highlightbackground = '#ff0000')
     
 #
 # 対戦レベルの弱めが押された時のラベル表示とレベルの保存　weakerはレベル0
@@ -1678,13 +1681,14 @@ def weaker_chosen():
     computer_level = 0
     play_sound_effect("levelchoice.mp3")
     root.update()
+    level_weak.configure(highlightbackground = '#ff0000')
 #
 # 対戦コンピューターの対戦レベル表示
 computer_level = tk.Label(f, text = "対戦\nレベル", font = ('Helvetica, 25'))
 computer_level.grid(row=4, column=8)
 #
 # コンピューターレベル強のボタン作成
-level_strong = tk.Button(f, text = "強め", command = stronger_chosen, font = ('Helvetica, 20'), highlightbackground = '#ff0000')
+level_strong = tk.Button(f, text = "強め", command = stronger_chosen, font = ('Helvetica, 20'))
 level_strong.grid(row=5, column=8)
 #
 # コンピューターレベル弱のボタン作成
